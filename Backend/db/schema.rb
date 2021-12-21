@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_20_135422) do
+ActiveRecord::Schema.define(version: 2021_12_21_013313) do
 
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "tagName"
-    t.bigint "tasks_id", null: false
+    t.bigint "task_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["tasks_id"], name: "index_tags_on_tasks_id"
+    t.index ["task_id"], name: "index_tags_on_task_id"
   end
 
   create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -25,20 +25,21 @@ ActiveRecord::Schema.define(version: 2021_12_20_135422) do
     t.string "content"
     t.boolean "status"
     t.datetime "endDate", precision: 6
-    t.bigint "users_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["users_id"], name: "index_tasks_on_users_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
+    t.string "email", null: false
     t.string "password"
-    t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "tags", "tasks", column: "tasks_id"
-  add_foreign_key "tasks", "users", column: "users_id"
+  add_foreign_key "tags", "tasks"
+  add_foreign_key "tasks", "users"
 end
