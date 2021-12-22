@@ -1,7 +1,6 @@
 module Api
     module V1
         class UsersController < ApplicationController
-
             # GET
             def index
                 users = User.all
@@ -40,18 +39,10 @@ module Api
 
             # DELETE/:id
             def destroy
-                user = User.find_by(id: params[:id])
+                user = User.find_by(id: params[:id]).destroy!
 
-                begin
-                    if user.destroy
-                        render json: {error: 'User deleted successfully!'}, status: 200
-                        #head :no_content
-                    else 
-                        render json: {error: user.errors.messages}, status: 422
-                    end
-                rescue
-                    render json: {error: 'User does not exist'}, status: 503
-                end
+                render json: {success: 'User deleted successfully!'}, status: 200
+                #head :no_content
             end
 
             # put this at the bottom for headers that need Json data
@@ -60,8 +51,6 @@ module Api
             def user_params
                 params.require(:user).permit(:name, :email, :password)
             end
-
-
         end
     end
 end
