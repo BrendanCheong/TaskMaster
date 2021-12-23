@@ -46,7 +46,7 @@ tags = Tag.create([
         task: tasks.first
     },
     {
-        tagName: "Leisure",
+        tagName: "Work",
         task: tasks.first
     },
     {

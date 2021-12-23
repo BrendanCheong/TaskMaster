@@ -1,10 +1,6 @@
 module Api
     module V1
         class TasksController < ApplicationController
-            
-            # update task by id
-            # delete task by id
-            # create task
 
             def index
                 tasks = Task.all
@@ -15,6 +11,17 @@ module Api
             def show
                 task = Task.find_by(id: params[:task_id])
                 render json: TaskSerializer.new(task).serialized_json, status: 200
+            end
+
+            # create task
+            def create
+                task = Task.new(task_params)
+
+                if task.save
+                    render json: TaskSerializer.new(task).serialized_json
+                else
+                    render json: {error: task.errors.messages}, status: 422
+                end
             end
 
             # find tasks by user_id
@@ -29,10 +36,32 @@ module Api
                 render json: TaskSerializer.new(tasks).serialized_json, status: 200
             end
 
+            # update task by id
+            def update
+                task = Task.find_by(id: params[:id])
+
+                if task.update(task_params)
+                    render json: TaskSerializer.new(task).serialized_json
+                else
+                    render json: {error: task.errors.messages}, status: 422
+                end
+            end
+
+            # delete task by id
+            def destroy
+                task = Task.find_by(id: params[:id]).destroy!
+
+                render json: {success: 'Task deleted successfully!'}, status: 200
+            end
+
             private
 
+            def task_params
+                params.require(:task).permit(:title, :content, :status, :endDate)
+            end
+
             def tags_params
-                params.require(:tag).permit(:task_id => [])
+                return params.permit(task_id: [])["task_id"].uniq
             end
         end
     end

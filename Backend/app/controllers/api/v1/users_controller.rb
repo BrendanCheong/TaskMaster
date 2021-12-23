@@ -10,9 +10,9 @@ module Api
 
             # GET/:id
             def show
-                user = User.find_by(id: params[:id])
+                @user = User.find_by(id: params[:id])
 
-                render json: UserSerializer.new(user).serialized_json, status: 200
+                render json: UserSerializer.new(@user).serialized_json, status: 200
             end
 
             # POST --json header
@@ -28,10 +28,10 @@ module Api
 
             # PUT/:id
             def update
-                user = User.find_by(id: params[:id])
+                @user = User.find_by(id: params[:id])
 
-                if user.update(user_params)
-                    render json: UserSerializer.new(user).serialized_json
+                if @user.update(user_params)
+                    render json: UserSerializer.new(@user).serialized_json
                 else
                     render json: {error: user.errors.messages}, status: 422
                 end
