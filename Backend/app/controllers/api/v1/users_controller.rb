@@ -1,6 +1,8 @@
 module Api
     module V1
         class UsersController < ApplicationController
+
+            skip_before_action :authenticate, only %i[index show]
             # GET
             def index
                 users = User.all

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get '/tags/tags_by_task/:task_id', to: "tags#tags_by_task"
       get '/tags/tags_by_user/:user_id', to: "tags#tags_by_user"
       post '/tasks/tag_filter/:id', to: "tasks#task_filter"
+      post '/auth', to: "authentication#create"
 
       resources :users
       resources :tasks
