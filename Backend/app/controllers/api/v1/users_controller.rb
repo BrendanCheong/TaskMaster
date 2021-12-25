@@ -2,7 +2,31 @@ module Api
     module V1
         class UsersController < ApplicationController
 
-            skip_before_action :authenticate, only %i[index show]
+            skip_before_action :authenticate, only: %i[login register]
+
+            def login
+                user = User.find_by(email: params[:email])
+
+                if user.present? && user.authenticate(params.require(:password))
+                    token = AuthenticationTokenService.encode(user)
+                    cookie_time(token)
+                    render json: { success: 'User logged In' }
+                else
+                    render json: { error: 'User not found' }, status: 404
+                end
+            end
+
+            def register
+                user = User.new(user_params)
+
+                if user.save
+                    token = AuthenticationTokenService.encode(user)
+                    render json: { success: 'User created!' }
+                else
+                    render json: { error: user.errors.messages }, status: 422
+                end
+            end
+
             # GET
             def index
                 users = User.all
@@ -17,25 +41,14 @@ module Api
                 render json: UserSerializer.new(@user).serialized_json, status: 200
             end
 
-            # POST --json header
-            def create
-                user = User.new(user_params)
-
-                if user.save
-                    render json: UserSerializer.new(user).serialized_json
-                else
-                    render json: {error: user.errors.messages}, status: 422
-                end
-            end
-
             # PUT/:id
             def update
-                @user = User.find_by(id: params[:id])
+                user = User.find_by(id: params[:id])
 
-                if @user.update(user_params)
-                    render json: UserSerializer.new(@user).serialized_json
+                if user.update(user_params) && user.authenticate(params[:confirm_password])
+                    render json: UserSerializer.new(user).serialized_json
                 else
-                    render json: {error: user.errors.messages}, status: 422
+                    render json: { error: user.errors.messages }, status: 422
                 end
             end
 
@@ -43,7 +56,7 @@ module Api
             def destroy
                 user = User.find_by(id: params[:id]).destroy!
 
-                render json: {success: 'User deleted successfully!'}, status: 200
+                render json: { success: 'User deleted successfully!' }, status: 200
                 #head :no_content
             end
 
@@ -51,7 +64,23 @@ module Api
             private
 
             def user_params
-                params.require(:user).permit(:name, :email, :password)
+                params.permit(:name, :email, :password)
+            end
+
+            def unauthenticated
+                head :unauthorized
+            end
+
+            def cookie_time(token)
+                response.set_cookie(
+                    :token,
+                    {
+                        value: token,
+                        httponly: true,
+                        secure: Rails.env.production?,
+                        path: '/'
+                    }
+                )
             end
         end
     end

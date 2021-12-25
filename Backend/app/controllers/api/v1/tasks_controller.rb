@@ -15,7 +15,9 @@ module Api
 
             # create task
             def create
-                task = Task.new(task_params)
+                input = task_params
+                input[:endDate] = DateTime.strptime(task_params[:endDate], "%d/%m/%Y %H:%M")
+                task = Task.new(input)
 
                 if task.save
                     render json: TaskSerializer.new(task).serialized_json
@@ -57,7 +59,7 @@ module Api
             private
 
             def task_params
-                params.require(:task).permit(:title, :content, :status, :endDate)
+                params.require(:task).permit(:title, :content, :status, :endDate, :user_id)
             end
 
             def tags_params

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+    has_secure_password
+
     validates :email, format: { 
         with: /\A(\S+)@(.+)\.(\S+)\z/, 
         message: "only valid emails allowed"
