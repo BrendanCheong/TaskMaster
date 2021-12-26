@@ -2,8 +2,8 @@ import axios from "axios";
 // TODO: Get rid of all the console logs at production!
 /**
  * Processes the main data, has attributes, type and most importantly ID
- * @param {string} query 
- * @param {string} endpoint 
+ * @param {string} query
+ * @param {string} endpoint
  * @returns {object} the first entry in the data
  */
 async function processData(query, endpoint) {
@@ -18,15 +18,15 @@ async function processData(query, endpoint) {
         };
     } catch (e) {
         console.error(`error from ${endpoint} at status: ${promise.status}`);
-        return(e.response);
+        return e.response;
     }
 }
 
 /**
  * Processes the relationships the query has to others
- * @param {string} query 
+ * @param {string} query
  * @param {endpoint} endpoint
- * @returns {object} returns the relationships of the data from API serializer 
+ * @returns {object} returns the relationships of the data from API serializer
  */
 async function processRelationships(query, endpoint) {
     try {
@@ -38,13 +38,13 @@ async function processRelationships(query, endpoint) {
         };
     } catch (e) {
         console.error(`error from ${endpoint} at status: ${promise.status}`);
-        return(e.response);
+        return e.response;
     }
 }
 /**
  * Gets the query message thats either success or error
- * @param {string} query 
- * @param {string} endpoint 
+ * @param {string} query
+ * @param {string} endpoint
  * @returns {boolean} whether message was error or success/ false or true.
  */
 async function getMessage(query, endpoint) {
@@ -80,7 +80,7 @@ class BaseAPI {
     }
 
     /**
-     * 
+     *
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}
@@ -90,7 +90,7 @@ class BaseAPI {
     }
 
     /**
-     * 
+     *
      * @param {string} url the target url
      * @returns {Promise}
      */
@@ -99,7 +99,7 @@ class BaseAPI {
     }
 
     /**
-     * 
+     *
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}
@@ -109,7 +109,7 @@ class BaseAPI {
     }
 
     /**
-     * 
+     *
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}

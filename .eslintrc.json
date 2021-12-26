@@ -1,38 +1,51 @@
 {
-  "extends": ["next/core-web-vitals"],
-  "rules": {
-    "no-unused-vars": "warn",
-    "no-console": "warn",
-    "comma-dangle": [2, "always-multiline"],
-    "max-len": ["warn", 120, {
-      "ignoreStrings": true,
-      "ignoreTemplateLiterals": true,
-      "ignoreComments": true
-    }],
-    "consistent-return": "warn",
-    "no-unreachable-loop": "error",
-    "no-plusplus": ["error", { 
-      "allowForLoopAfterthoughts": true 
-    }],
-    "function-call-argument-newline": 0,
-    "function-paren-newline": 0,
-    "semi": ["error", "always"],
-    "indent": ["warn", 4],
-    "quotes": ["error", "double"],
-    // enables documentation for all functions
-    "valid-jsdoc": [2, {
-      "requireReturn": false,
-      "requireParamDescription": false,
-      "requireReturnDescription": false
-    }],
-    "require-jsdoc": ["warn", {
-        "require": {
-            "FunctionDeclaration": true,
-            "MethodDefinition": true,
-            "ClassDeclaration": true,
-            "ArrowFunctionExpression": false,
-            "FunctionExpression": false
-        }
-    }]
-  }
+    "extends": ["next/core-web-vitals"],
+    "rules": {
+        "no-unused-vars": "warn",
+        "no-console": "warn",
+        "comma-dangle": [2, "always-multiline"],
+        "max-len": [
+            "warn",
+            120,
+            {
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true,
+                "ignoreComments": true
+            }
+        ],
+        "consistent-return": "warn",
+        "no-unreachable-loop": "error",
+        "no-plusplus": [
+            "error",
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ],
+        "function-call-argument-newline": 0,
+        "function-paren-newline": 0,
+        "semi": ["error", "always"],
+        "indent": ["warn", 4],
+        "quotes": ["error", "double"],
+        // enables documentation for all functions
+        "valid-jsdoc": [
+            2,
+            {
+                "requireReturn": false,
+                "requireParamDescription": false,
+                "requireReturnDescription": false
+            }
+        ],
+        "require-jsdoc": [
+            "warn",
+            {
+                "require": {
+                    "FunctionDeclaration": true,
+                    "MethodDefinition": true,
+                    "ClassDeclaration": true,
+                    "ArrowFunctionExpression": false,
+                    "FunctionExpression": false
+                }
+            }
+        ]
+    }
 }
