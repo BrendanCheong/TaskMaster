@@ -1,10 +1,13 @@
 {
   "name": "my-app",
   "private": true,
+  "description": "",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "next dev -p 8888",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8888",
     "lint": "next lint"
   },
   "dependencies": {
