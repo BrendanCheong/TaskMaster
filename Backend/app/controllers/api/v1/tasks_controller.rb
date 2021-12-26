@@ -22,7 +22,7 @@ module Api
                 if task.save
                     render json: TaskSerializer.new(task).serialized_json
                 else
-                    render json: {error: task.errors.messages}, status: 422
+                    render json: { error: task.errors.messages }, status: 422
                 end
             end
 
@@ -45,7 +45,7 @@ module Api
                 if task.update(task_params)
                     render json: TaskSerializer.new(task).serialized_json
                 else
-                    render json: {error: task.errors.messages}, status: 422
+                    render json: { error: task.errors.messages }, status: 422
                 end
             end
 
@@ -53,7 +53,7 @@ module Api
             def destroy
                 task = Task.find_by(id: params[:id]).destroy!
 
-                render json: {success: 'Task deleted successfully!'}, status: 200
+                render json: { success: 'Task deleted successfully!' }, status: 200
             end
 
             private

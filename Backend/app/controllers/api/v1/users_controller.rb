@@ -12,7 +12,7 @@ module Api
                     cookie_time(token)
                     render json: { success: 'User logged In' }
                 else
-                    render json: { error: 'User not found' }, status: 404
+                    render json: { error: 'User not found' }, status: 422
                 end
             end
 

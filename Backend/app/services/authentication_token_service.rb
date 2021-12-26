@@ -17,18 +17,7 @@ class AuthenticationTokenService
     end
 
     def self.decode(token)
-        begin
-            body = JWT.decode(token, HMAC_SECRET, true, { algorithm: ALGO })[0]
-            HashWithIndifferentAccess.new body
-        # Raise errors if failed
-        rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::InvalidJtiError => e
-            raise unauthorized(e)
-        end
-    end
-
-    private
-
-    def unauthorized(e)
-        render json: { error: e.message }, status: :unauthorized
+        payload = JWT.decode(token, HMAC_SECRET, true, { algorithm: ALGO })[0]
+        HashWithIndifferentAccess.new payload
     end
 end

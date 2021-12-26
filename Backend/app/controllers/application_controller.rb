@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
     rescue_from ActiveRecord::RecordInvalid, with: :param_missing
     rescue_from ActionController::ParameterMissing, with: :param_missing
     rescue_from JWT::DecodeError, JWT::VerificationError, with: :unprocessable
+    rescue_from JWT::ExpiredSignature, JWT::VerificationError, JWT::InvalidJtiError, with: :unauthorized
 
     protect_from_forgery with: :exception
 
@@ -20,6 +21,10 @@ class ApplicationController < ActionController::API
 
     def param_missing(e)
         render json: { error: e.message }, status: :unprocessable_entity
+    end
+
+    def unauthorized(e)
+        render json: { error: e.message }, status: :forbidden
     end
 
     def authenticate
