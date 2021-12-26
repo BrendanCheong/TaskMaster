@@ -7,6 +7,7 @@ TaskMaster is a ToDo manager that aims to help users keep track of and categoris
 # Details about me
 
 Matric Number: A0217998E
+</br>
 Email: brendan_cej@u.nus.edu
 
 ## Getting Started
