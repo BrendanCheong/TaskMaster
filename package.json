@@ -1,9 +1,9 @@
 {
-    "name": "my-app",
+    "name": "taskmaster",
     "private": true,
-    "description": "",
+    "description": "TaskMaster - Ultimate ToDo List Application",
     "version": "1.0.0",
-    "type": "module",
+    "license": "MIT",
     "scripts": {
         "dev": "next dev -p 8888",
         "build": "next build",

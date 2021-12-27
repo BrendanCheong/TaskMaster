@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 
 const Home = () => {
     return (
-        <div className={styles.container}>
+        <div className="p-2">
             <Head>
                 <title>TaskMaster</title>
                 <meta name="description" content="TaskMaster, the ultimate To-Do List" />
@@ -38,7 +38,7 @@ const Home = () => {
 
                     <a
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                        className={styles.card}
+                        className="bg-blue-500 border-blue-600"
                     >
                         <h2>Deploy &rarr;</h2>
                         <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>

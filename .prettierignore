@@ -1,0 +1,9 @@
+# Ignore All Ruby files
+*.rb
+
+# Ignore Html fileutils
+*.html
+
+# Ignore json file
+*.json
+*.config.js
