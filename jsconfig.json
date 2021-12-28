@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": "/",
+        "paths": {
+            "@/home/*": ["components/home/*"],
+            "@/app/*": ["components/app/*"],
+            "@/global/*": ["components/global/*"],
+            "@/util/*": ["components/base/util/*"],
+            "@/api/*": ["components/base/api/*"],
+        }
+    }
+}
