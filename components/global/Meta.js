@@ -22,7 +22,7 @@ const Meta = ({ title, keywords, description }) => {
 Meta.defaultProps = {
     title: "TaskMaster - The Ultimate ToDo Application",
     keywords: "full-stack web development, CVWO, computing for voluntary welfare organisations, ruby on rails, todo list, todo app, MySQL, NextJS, Redux, React, TailwindCSS, MaterialUI",
-    description: "A ToDo list full-stack application for National University of Singapore Computing For Volunteery Welfare Organisations",
+    description: "A ToDo list full-stack application for National University of Singapore Computing For Voluntary Welfare Organisations",
 };
 
 export default Meta;

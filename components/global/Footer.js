@@ -1,21 +1,29 @@
-import Image from "next/image";
+import LinkedIn from "@/SVG/LinkedIn";
+import Github from "@/SVG/Github";
+import Mail from "@/SVG/Mail";
 
 const Footer = () => {
     return (
-        <div>
-            <footer className="flex justify-center align-center grow">
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Powered by{" Your mom "}
-                    <span className="h-1 ml-1">
-                        <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                    </span>
-                </a>
-            </footer>
-        </div>
+        <>
+            <div className="max-w-screen-xl px-4 py-6 mx-auto space-y-5 overflow-hidden bg-transparent sm:px-6 lg:px-8 h-1/6">
+                <h1 className="text-xl text-center text-black font-poppins">Get In Touch With Me!</h1>
+                <div className="flex justify-center mt-8 space-x-6">
+                    <a href="https://www.linkedin.com/in/brendan-cheong-ern-jie/" className="text-black" target="_blank"
+                        rel="noreferrer">
+                        <LinkedIn/>
+                    </a>
+                    <a href="https://github.com/BrendanCheong" className="text-black" target="_blank" rel="noreferrer">
+                        <Github/>
+                    </a>
+                    <a href="mailto: brendan_cej@u.nus.edu" className="text-black">
+                        <Mail/>
+                    </a>
+                </div>
+                <p className="mt-8 font-sans text-base leading-6 text-center text-black">
+                    Made by Brendan Cheong.
+                </p>
+            </div>
+        </>
     );
 };
 
