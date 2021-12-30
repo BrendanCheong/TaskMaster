@@ -4,8 +4,9 @@
     "description": "TaskMaster - Ultimate ToDo List Application",
     "version": "1.0.0",
     "license": "MIT",
+    "type": "module",
     "scripts": {
-        "dev": "next dev -p 8888",
+        "dev": "NODE_OPTIONS='--inspect' next dev -p 8888",
         "build": "next build",
         "start": "next start -p 8888",
         "lint": "next lint"
@@ -18,11 +19,12 @@
         "axios": "^0.24.0",
         "immer": "^9.0.7",
         "moment": "^2.29.1",
-        "next": "12.0.7",
+        "next": "^12.0.7",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-redux": "^7.2.6",
         "redux": "^4.1.2",
+        "swr": "^1.1.2",
         "yup": "^0.32.11"
     },
     "devDependencies": {
