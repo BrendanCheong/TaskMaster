@@ -4,7 +4,7 @@ class AuthenticationTokenService
     ALGO = ENV['JWT_ALGO']
 
     def self.encode(user)
-        exp = (60).minutes.from_now.to_i
+        exp = Time.now.to_i + 3600
         payload = { 
             id: user[:id], 
             email: user[:email], 

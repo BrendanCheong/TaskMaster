@@ -4,6 +4,10 @@ module Api
 
             skip_before_action :authenticate, only: %i[login register]
 
+            """
+            TODO:
+            1) remove delete and get all users routes
+            """
             def login
                 user = User.find_by(email: params[:email])
 
@@ -27,6 +31,16 @@ module Api
                 end
             end
 
+            # refreshes the existing JWT token if token is valid
+            # only works if the user has a valid JWT token
+            # token is the exact same user data as you have before
+            def refresh
+                token = AuthenticationTokenService.encode(decoded_token)
+                cookie_time(token)
+
+                render json: { success: 'User token refreshed' }, status: 200
+            end
+
             # GET
             def index
                 users = User.all
@@ -36,17 +50,17 @@ module Api
 
             # GET/:id
             def show
-                @user = User.find_by(id: params[:id])
+                @user = User.find_by(id: decoded_token[:id])
 
                 render json: UserSerializer.new(@user).serialized_json, status: 200
             end
 
             # PUT/:id
             def update
-                user = User.find_by(id: params[:id])
+                user = User.find_by(id: decoded_token[:id])
 
                 if user.update(user_params) && user.authenticate(params[:confirm_password])
-                    render json: UserSerializer.new(user).serialized_json
+                    render json: { success: 'User details updated!' }
                 else
                     render json: { error: user.errors.messages }, status: 422
                 end
@@ -67,8 +81,8 @@ module Api
                 params.permit(:name, :email, :password)
             end
 
-            def unauthenticated
-                head :unauthorized
+            def decoded_token
+                AuthenticationTokenService.decode(cookies[:token])
             end
 
             def cookie_time(token)

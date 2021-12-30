@@ -4,9 +4,9 @@ class ApplicationController < ActionController::API
     include ActionController::RequestForgeryProtection
 
     rescue_from ActiveRecord::RecordNotDestroyed, with: :unprocessable
-    rescue_from ActiveRecord::RecordInvalid, with: :param_missing
-    rescue_from ActionController::ParameterMissing, with: :param_missing
-    rescue_from JWT::DecodeError, JWT::VerificationError, with: :unprocessable
+    rescue_from ActiveRecord::RecordInvalid, with: :unprocessable
+    rescue_from ActionController::ParameterMissing, with: :unprocessable
+    rescue_from JWT::DecodeError, JWT::ImmatureSignature, with: :unprocessable
     rescue_from JWT::ExpiredSignature, JWT::VerificationError, JWT::InvalidJtiError, with: :unauthorized
 
     protect_from_forgery with: :exception
@@ -16,10 +16,6 @@ class ApplicationController < ActionController::API
     private
 
     def unprocessable(e)
-        render json: { error: e.record.errors }, status: :unprocessable_entity
-    end
-
-    def param_missing(e)
         render json: { error: e.message }, status: :unprocessable_entity
     end
 

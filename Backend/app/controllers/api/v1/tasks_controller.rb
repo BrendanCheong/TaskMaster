@@ -28,7 +28,8 @@ module Api
 
             # find tasks by user_id
             def user_id
-                tasks = Task.where(user_id: params[:id])
+                decoded = AuthenticationTokenService.decode(cookies[:token])
+                tasks = Task.where(user_id: decoded[:id])
                 render json: TaskSerializer.new(tasks).serialized_json, status: 200
             end
 
