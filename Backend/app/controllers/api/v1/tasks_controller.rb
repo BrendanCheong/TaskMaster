@@ -16,11 +16,12 @@ module Api
             # create task
             def create
                 input = task_params
-                input[:endDate] = DateTime.strptime(task_params[:endDate], "%d/%m/%Y %H:%M")
+                input[:endDate] = DateTime.strptime(task_params[:endDate], '%d/%m/%Y %H:%M')
+                input[:user_id] = decoded_token[:id]
                 task = Task.new(input)
 
                 if task.save
-                    render json: TaskSerializer.new(task).serialized_json
+                    render json: { success: 'Task created successfully' }, status: 200
                 else
                     render json: { error: task.errors.messages }, status: 422
                 end
@@ -28,15 +29,18 @@ module Api
 
             # find tasks by user_id
             def user_id
-                decoded = AuthenticationTokenService.decode(cookies[:token])
-                tasks = Task.where(user_id: decoded[:id])
+                tasks = Task.where(user_id: decoded_token[:id])
                 render json: TaskSerializer.new(tasks).serialized_json, status: 200
             end
 
-            # find task by tag names array, by using an array of task_ids + user_id NO DUPLICATE IDs in params
+            # find task by tag names array, duplicate names allowed (but not allowed on front-end anyways)
             def task_filter
-                tasks = Task.where(user_id: params[:id], id: tags_params)
-                render json: TaskSerializer.new(tasks).serialized_json, status: 200
+                tasks = Task.includes(:tags)
+                    .where(tags: { tagName: tags_params })
+                    .where(user_id: decoded_token[:id])
+                    .pluck(:id)
+                answer = Task.where(id: tasks)
+                render json: TaskSerializer.new(answer).serialized_json, status: 200
             end
 
             # update task by id
@@ -60,11 +64,15 @@ module Api
             private
 
             def task_params
-                params.require(:task).permit(:title, :content, :status, :endDate, :user_id)
+                params.require(:task).permit(:title, :content, :status, :endDate)
+            end
+
+            def decoded_token
+                AuthenticationTokenService.decode(cookies[:token])
             end
 
             def tags_params
-                return params.permit(task_id: [])["task_id"].uniq
+                return params.permit(tagName: [])["tagName"].uniq
             end
         end
     end

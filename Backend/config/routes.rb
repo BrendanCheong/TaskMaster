@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get '/tags/tags_by_user/:user_id', to: "tags#tags_by_user"
       post '/users/login', to: "users#login"
       post '/users/register', to: "users#register"
-      post '/tasks/tag_filter/:id', to: "tasks#task_filter"
+      post '/tasks/tag_filter', to: "tasks#task_filter"
 
       resources :users, only: [:index, :update, :show, :destroy]
       resources :tasks

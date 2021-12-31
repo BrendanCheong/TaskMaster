@@ -1,7 +1,7 @@
 module Api
     module V1
         class TagsController < ApplicationController
-            # find a tags by task_id
+            # find tags by task_id
             def tags_by_task
                 tags = Tag.joins(task: :user).where(tasks: { id: task_id_params })
                 render json: TagSerializer.new(tags).serialized_json, status: 200
@@ -17,17 +17,22 @@ module Api
             def destroy
                 tag = Tag.find_by(id: params[:id]).destroy!
 
-                render json: {success: 'Task deleted successfully!'}, status: 200
+                render json: { success: 'Tag deleted successfully!' }, status: 200
             end
 
             # create tag
             def create
-                tag = Tag.new(tag_params)
-
-                if task.save
-                    render json: TaskSerializer.new(tag).serialized_json
-                else
-                    render json: {error: task.errors.messages}, status: 422
+                begin
+                    tag_array = tag_params[:tagName].map { |name| 
+                        {
+                            'tagName' => name, 
+                            'task_id' => tag_params[:task_id] 
+                        }
+                    }
+                    tags = Tag.insert_all!(tag_array)
+                    render json: { success: 'Tags created successfully!' }, status: 200
+                rescue Exception => e
+                    render json: { error: e }, status: 422
                 end
             end
 
@@ -39,7 +44,7 @@ module Api
 
             # get a tag by id
             def show
-                tag = Tag.find_by(id: params[:id)
+                tag = Tag.find_by(id: params[:id])
                 render json: TagSerializer.new(tag).serialized_json, status: 200
             end
 
@@ -52,7 +57,7 @@ module Api
             private
 
             def tag_params
-                params.require(:tag).permit(:tagName, :task_id)
+                params.require(:tag).permit(:task_id, :tagName => [])
             end
 
             def task_id_params
