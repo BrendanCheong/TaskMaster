@@ -4,7 +4,6 @@
     "description": "TaskMaster - Ultimate ToDo List Application",
     "version": "1.0.0",
     "license": "MIT",
-    "type": "module",
     "scripts": {
         "dev": "NODE_OPTIONS='--inspect' next dev -p 8888",
         "build": "next build",

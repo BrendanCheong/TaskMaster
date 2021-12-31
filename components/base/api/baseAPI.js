@@ -4,7 +4,7 @@ import axios from "axios";
  * 
  */
 /**
- * Processes the main data, has attributes, type and most importantly ID
+ * Processes the main data, has attributes, type and most importantly ID.
  * Only outputs the first one
  * @param {string} query
  * @param {string} endpoint
@@ -20,28 +20,26 @@ function processAttributes(query, endpoint) {
         const processedData = data.attributes;
         processedData["id"] = data.id;
         return processedData;
-    }).catch((error) => {
-        console.error(error);
     });
 }
-
 /**
- * Processes the relationships the query has to others
- * @param {string} query
- * @param {endpoint} endpoint
- * @returns {object} returns the relationships of the data from API serializer
+ * Processes the main data, has attributes, type and most importantly ID.
+ * Outputs all the entries as an array.
+ * @param {string} query 
+ * @param {string} endpoint 
+ * @returns {object} an array of all the data
  */
-function processRelationships(query, endpoint) {
+function processAttributesArray(query, endpoint) {
     return query.then((resp) => {
-        const data = resp.data;
+        const data = resp.data.data;
         if (process.env.NEXT_PUBLIC_API_URL === "development") {
             // eslint-disable-next-line no-console
             console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
         }
-        return data[0].relationships;
+        return data;
     });
-
 }
+
 /**
  * Gets the query message thats either success or error
  * @param {string} query
@@ -57,11 +55,8 @@ function getMessage(query, endpoint) {
         } 
         if ("success" in data) {
             return true;
-        } else {
-            return false;
         }
-    }).catch((error) => {
-        console.error(error);
+        return false;
     });
 }
 
@@ -78,13 +73,22 @@ class BaseAPI {
             baseURL: "http://localhost:3000/api/v1", // change to process.env later
             withCredentials: true,
             headers: {
-                Cookie: "token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MDg4MjMyNX0.TNVtDKOvmInP9Whi_i5aYhR-7V4YtvadI5edWVA--gA",
+                Cookie: "token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MDk0NTUzMn0.fmfrXyIeAcAsbvKyYKirnvbRJT1ltCiWS8A8UO-ntVg",
             },
         });
     }
 
     /**
-     *
+     * Combines the extra slug with the default attachment.
+     * @param {string} slug 
+     * @returns {string} combined url
+     */
+    slugCombiner(slug) {
+        return this.attachment + slug;
+    }
+
+    /**
+     * Post.
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}
@@ -94,7 +98,7 @@ class BaseAPI {
     }
 
     /**
-     *
+     * Get.
      * @param {string} url the target url
      * @returns {Promise}
      */
@@ -103,7 +107,7 @@ class BaseAPI {
     }
 
     /**
-     *
+     * Put.
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}
@@ -113,7 +117,7 @@ class BaseAPI {
     }
 
     /**
-     *
+     * Delete.
      * @param {string} url the target url
      * @param {object} data the data to be sent to rails
      * @returns {Promise}
@@ -122,27 +126,73 @@ class BaseAPI {
         return this.axiosInstance.delete(url, data);
     }
 
-    postGetMessage(url, data) {
+    /**
+     * Posts data to rails and see if its successful.
+     * @param {string} url 
+     * @param {data} data 
+     * @returns {boolean} either true or false, posted data is correct or wrong.
+     */
+    post(url, data) {
         return getMessage(this.apiPost(url, data), url);
     }
 
+    /**
+     * Gets data for single attributes.
+     * @param {string} url 
+     * @returns {object} returns a single object with all the attributes
+     */
     get(url) {
         return processAttributes(this.apiGet(url));
     }
 
+    /**
+     * Puts will update the table idempotently.
+     * @param {string} url 
+     * @param {object} data 
+     * @returns {boolean} either successfully update true or false.
+     */
     put(url, data) {
         return getMessage(this.apiPut(url, data), url);
     }
-}
-// const login = {
-//     email: "john@gmail.com",
-//     password: "newtown",
-// };
-// const nabei = new BaseAPI();
 
-// const promise = nabei.apiPost("/users/login", login);
-// getMessage(promise, "limpeh").then((resp) => console.log(resp));
-// const test = nabei.apiGet("/users/");
-// processRelationships(test, "chi bai kia").then((resp) => console.log(resp));
+    /**
+     * Puts will update the table and return the new updated entry.
+     * @param {string} url 
+     * @param {object} data 
+     * @returns {object} with the newly changed entry
+     */
+    putAttributes(url, data) {
+        return processAttributes(this.apiPut(url, data));
+    }
+
+    /**
+     * 
+     * @param {string} url 
+     * @param {object} data 
+     * @returns {boolean} either successfully delete or false.
+     */
+    delete(url, data) {
+        return getMessage(this.apiDelete(url, data), url);
+    }
+
+    /**
+     * Gets data for multiple attributes.
+     * @param {string} url 
+     * @returns {object[]} returns an array of objects with all the attributes
+     */
+    getArray(url) {
+        return processAttributesArray(this.apiGet(url));
+    }
+
+    /**
+     * Post data for multiple attributes.
+     * @param {string} url 
+     * @param {object} data 
+     * @returns {object[]} returns an array of objects with all the attributes
+     */
+    postArray(url, data) {
+        return processAttributesArray(this.apiPost(url, data));
+    }
+}
 
 export default BaseAPI;
