@@ -1,5 +1,4 @@
 import BaseAPI from "./baseAPI";
-import { refreshToken } from "../util/refreshToken";
 // TODO: Change the file .js names at the end to blank
 
 /**
@@ -23,7 +22,7 @@ class TaskAPI extends BaseAPI {
      * @returns {boolean} either true for successfully added or false for fail to add
      */
     taskCreate(slug, data) {
-        return super.post(super.slugCombiner(slug), data);
+        return super.postAttributes(super.slugCombiner(slug), data);
     }
 
     /**
@@ -36,6 +35,10 @@ class TaskAPI extends BaseAPI {
         return super.getArray(super.slugCombiner(slug));
     }
 
+    taskGetOne(slug) {
+        return super.get(super.slugCombiner(slug));
+    }
+
     /**
      * Gets all the tasks associated with the array of tag names.
      * @param {string} slug 
@@ -43,7 +46,7 @@ class TaskAPI extends BaseAPI {
      * @returns {object[]}an array of task data with associated tags as nested array
      */
     taskFilterTagName(slug, data) {
-        return super.postArray(super.slugCombiner(slug), data);
+        return super.postAttributes(super.slugCombiner(slug), data);
     }
 
     /**

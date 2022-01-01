@@ -1,5 +1,4 @@
 import BaseAPI from "./baseAPI";
-import { refreshToken } from "../util/refreshToken";
 // TODO: Change the file .js names at the end to blank
 
 /**

@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from "axios";
+import Router from "next/router";
 
 /**
  * Refreshes the existing token of the user. If token expired, return false.
@@ -18,6 +19,7 @@ export async function refreshToken() {
         }
     } catch (e) {
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") console.error(e.response.data);
+        Router.push("/");
         return false;
     }
 };

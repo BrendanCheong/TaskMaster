@@ -1,9 +1,66 @@
 import axios from "axios";
-import { useRouter } from "next/router";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync } from "@/redux/redux-thunks/taskAsync";
+import { unwrapResult } from "@reduxjs/toolkit";
+import TaskAPI from "@/api/taskAPI";
+import TagAPI from "@/api/tagAPI";
+//(state.tasks[0] ? (state.tasks[0].HTTP ? state.tasks[0].HTTP : state.tasks[0].attributes.title) : "nothing")
+// if state.tasks[0]
+//     if state.tasks[0].HTTP === "LOADING"
+//          render loading
+//     if state.tasks[0].HTTP === "ERROR"
+//          render error
+// else
+//     "nothing"
 const Login = () => {
 
-    const router = useRouter();
+    const dispatch = useDispatch();
+    // grab current store's state, we choose task state
+    const tasks = useSelector((state) => state.tasks);
+    const state = useSelector((state) => state);
+
+    const addTagArray = async (tagArray, id) => {
+        try {
+            const tagApi = new TagAPI();
+            const tagResponse = await tagApi.tagCreate("/", {
+                tagName: tagArray,
+                task_id: id,
+            });
+            return tagResponse;
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const addTaskButton = async (payload, tagArray) => {
+        try {
+            const taskApi = new TaskAPI();
+            const data = await taskApi.taskCreate("/", payload);
+            console.log(data);
+            const id = data.id;
+            if (tagArray.length > 0) {
+                await addTagArray(tagArray, id);
+            }
+            dispatch(addTaskAsync(id));
+        } catch (e) {
+            console.error(e);
+        }
+
+    };
+
+    const handleCompleteClick = () => {
+        // must have id!, also only 1 argument!
+        dispatch(
+            toggleTaskStatusAsync({
+                "status": !tasks[0].attributes.status,
+                "id": 1,
+            })
+        );
+    };
+
+    const handleDeleteClick = (id) => {
+        dispatch(deleteTaskAsync(id));
+    };
 
     const loginPost = async() => {
         try {
@@ -34,6 +91,24 @@ const Login = () => {
             </button>
             <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => refresh()}>
                 Register
+            </button>
+            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => addTaskButton({
+                // form has to validate and create the new task
+                title: "Pills",
+                content: "Take some pills",
+                status: false,
+                endDate: "27/1/2022 11:00",
+            }, ["Tag1", "Tag2", "Tag3"])}>
+                addTask
+            </button>
+            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => state.tasks.map((task) => console.log(task))}>
+                redirect
+            </button>
+            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => handleCompleteClick()}>
+                {"toggle " + tasks[0]}
+            </button>
+            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => handleDeleteClick(8)}>
+                delete
             </button>
         </div>
     );

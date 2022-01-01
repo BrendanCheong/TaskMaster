@@ -17,13 +17,14 @@
         "@reduxjs/toolkit": "^1.7.1",
         "axios": "^0.24.0",
         "immer": "^9.0.7",
+        "material-ui-chip-input": "^2.0.0-beta.2",
         "moment": "^2.29.1",
         "next": "^12.0.7",
+        "prop-types": "^15.8.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-redux": "^7.2.6",
         "redux": "^4.1.2",
-        "swr": "^1.1.2",
         "yup": "^0.32.11"
     },
     "devDependencies": {

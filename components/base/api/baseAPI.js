@@ -1,4 +1,5 @@
 import axios from "axios";
+import { refreshToken } from "../util/refreshToken";
 /** //TODO: 1) Get rid of all the console logs at production!
  * 2) get rid of console.errors before using useSWR
  * 
@@ -8,36 +9,21 @@ import axios from "axios";
  * Only outputs the first one
  * @param {string} query
  * @param {string} endpoint
- * @returns {object} the first entry in the data
+ * @returns {object} the data as it is, can be object[]
  */
-function processAttributes(query, endpoint) {
+async function processAttributes(query, endpoint) {
+    const token = await refreshToken();
+    if (!token) {
+        return token;
+    }
     return query.then((resp) => {
         const data = resp.data.data;
-        if (process.env.NEXT_PUBLIC_API_URL === "development") {
-            // eslint-disable-next-line no-console
-            console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
-        }
-        const processedData = data.attributes;
-        processedData["id"] = data.id;
-        return processedData;
-    });
-}
-/**
- * Processes the main data, has attributes, type and most importantly ID.
- * Outputs all the entries as an array.
- * @param {string} query 
- * @param {string} endpoint 
- * @returns {object} an array of all the data
- */
-function processAttributesArray(query, endpoint) {
-    return query.then((resp) => {
-        const data = resp.data.data;
-        if (process.env.NEXT_PUBLIC_API_URL === "development") {
+        if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
             // eslint-disable-next-line no-console
             console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
         }
         return data;
-    });
+    }).catch((err) => console.error(err));
 }
 
 /**
@@ -46,18 +32,22 @@ function processAttributesArray(query, endpoint) {
  * @param {string} endpoint
  * @returns {boolean} whether message was error or success/ false or true.
  */
-function getMessage(query, endpoint) {
+async function getMessage(query, endpoint) {
+    const token = await refreshToken();
+    if (!token) {
+        return token;
+    }
     return query.then((resp) => {
         const data = resp.data;
-        if (process.env.NEXT_PUBLIC_API_URL === "development") {
+        if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
             // eslint-disable-next-line no-console
             console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
         } 
-        if ("success" in data) {
+        if (!("error" in data)) {
             return true;
         }
         return false;
-    });
+    }).catch((err) => console.error(err));;
 }
 
 /**
@@ -70,10 +60,12 @@ class BaseAPI {
      */
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: "http://localhost:3000/api/v1", // change to process.env later
+            baseURL: process.env.NEXT_PUBLIC_API_URL, // change to process.env later
             withCredentials: true,
             headers: {
-                Cookie: "token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MDk0NTUzMn0.fmfrXyIeAcAsbvKyYKirnvbRJT1ltCiWS8A8UO-ntVg",
+                "Content-Type": "application/json",
+                "Accept": "*/*",
+                "X-Requested-With": "XMLHttpRequest",
             },
         });
     }
@@ -129,11 +121,21 @@ class BaseAPI {
     /**
      * Posts data to rails and see if its successful.
      * @param {string} url 
-     * @param {data} data 
+     * @param {object} data 
      * @returns {boolean} either true or false, posted data is correct or wrong.
      */
     post(url, data) {
         return getMessage(this.apiPost(url, data), url);
+    }
+
+    /**
+     * Posts data to rails and get the new created output added to database.
+     * @param {string} url 
+     * @param {object} data 
+     * @returns {object}
+     */
+    postAttributes(url, data) {
+        return processAttributes(this.apiPost(url, data), url);
     }
 
     /**
@@ -142,7 +144,7 @@ class BaseAPI {
      * @returns {object} returns a single object with all the attributes
      */
     get(url) {
-        return processAttributes(this.apiGet(url));
+        return processAttributes(this.apiGet(url), url);
     }
 
     /**
@@ -162,7 +164,7 @@ class BaseAPI {
      * @returns {object} with the newly changed entry
      */
     putAttributes(url, data) {
-        return processAttributes(this.apiPut(url, data));
+        return processAttributes(this.apiPut(url, data), url);
     }
 
     /**
@@ -172,7 +174,7 @@ class BaseAPI {
      * @returns {boolean} either successfully delete or false.
      */
     delete(url, data) {
-        return getMessage(this.apiDelete(url, data), url);
+        return processAttributes(this.apiDelete(url, data), url);
     }
 
     /**
@@ -181,18 +183,9 @@ class BaseAPI {
      * @returns {object[]} returns an array of objects with all the attributes
      */
     getArray(url) {
-        return processAttributesArray(this.apiGet(url));
+        return processAttributes(this.apiGet(url), url);
     }
 
-    /**
-     * Post data for multiple attributes.
-     * @param {string} url 
-     * @param {object} data 
-     * @returns {object[]} returns an array of objects with all the attributes
-     */
-    postArray(url, data) {
-        return processAttributesArray(this.apiPost(url, data));
-    }
 }
 
 export default BaseAPI;
