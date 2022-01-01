@@ -8,8 +8,9 @@ module Api
             end
 
             # find task by id
+            # users can only view their tasks not anyone else's
             def show
-                task = Task.find_by(id: params[:task_id])
+                task = Task.find_by(id: params[:id], user_id: decoded_token[:id])
                 render json: TaskSerializer.new(task).serialized_json, status: 200
             end
 
@@ -21,7 +22,7 @@ module Api
                 task = Task.new(input)
 
                 if task.save
-                    render json: { success: 'Task created successfully' }, status: 200
+                    render json: TaskSerializer.new(task).serialized_json, status: 200
                 else
                     render json: { error: task.errors.messages }, status: 422
                 end
@@ -58,7 +59,7 @@ module Api
             def destroy
                 task = Task.find_by(id: params[:id]).destroy!
 
-                render json: { success: 'Task deleted successfully!' }, status: 200
+                render json: TaskSerializer.new(task).serialized_json, status: 200
             end
 
             private
