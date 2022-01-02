@@ -28,7 +28,8 @@ const Content = () => {
         onSubmit: (values) => {
             values["tagArray"] = tagArray;
             values["endDate"] = processDate(values["endDate"]);
-            console.log(values);
+            // eslint-disable-next-line no-console
+            if (proccess.env.NEXT_PUBLIC_APP_ENV === "development") console.log(values);
         },
         validationSchema: validationTaskSchema,
     });
@@ -85,6 +86,9 @@ const Content = () => {
                         label="Tags"
                         onKeyPress={e => { e.which === 13 && e.preventDefault(); }}
                     />
+                    <button className="relative w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 shadow-md rounded-xl bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto md:hidden" type="submit">
+                        Submit!
+                    </button>
                 </section>
                 <section className="hidden sm:flex sm:flex-col sm:p-3 sm:space-y-16 sm:basis-8/12" id="preview form">
                     <div className="container absolute w-[70%] mx-auto columns-2">
@@ -92,10 +96,10 @@ const Content = () => {
                             {formik.values.title}
                         </h1>
                         <div className="space-x-3">
-                            <button className="relative w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900" type="submit">
-                        Add Task!
+                            <button className="relative w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto" type="submit">
+                                Submit!
                             </button>
-                            <span className="relative w-40 h-10 px-5 py-2 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md select-none bg-gradient-to-r from-sky-500 to-teal-600">
+                            <span className="relative w-40 h-10 px-5 py-2 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md select-none bg-gradient-to-r from-sky-500 to-teal-600 font-roboto">
                                 Previewing...
                             </span>
                         </div>
@@ -106,7 +110,6 @@ const Content = () => {
                     </span>
                 </section>
             </form>
-            
         </div>
     );
 };

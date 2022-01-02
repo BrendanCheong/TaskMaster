@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
     const sideBarData = { toggleSideBar, isSideBarActive };
     
     return (
-        <div className="relative w-full min-h-screen transition duration-500 ease-in-out bg-white md:flex">
+        <div className="relative w-full min-h-screen transition duration-500 ease-in-out bg-zinc-100 md:flex">
             <SideBarContext.Provider value={sideBarData}>
                 {children}
             </SideBarContext.Provider>

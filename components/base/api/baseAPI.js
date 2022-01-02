@@ -20,7 +20,7 @@ async function processAttributes(query, endpoint) {
         const data = resp.data.data;
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
             // eslint-disable-next-line no-console
-            console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
+            console.info(`data for ${endpoint} : ${JSON.stringify(data)} at status => ${resp.status}`);
         }
         return data;
     }).catch((err) => console.error(err));
@@ -41,7 +41,7 @@ async function getMessage(query, endpoint) {
         const data = resp.data;
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
             // eslint-disable-next-line no-console
-            console.info(`data for ${endpoint} : ${data} at status => ${resp.status}`);
+            console.info(`data for ${endpoint} : ${JSON.stringify(data)} at status => ${resp.status}`);
         } 
         if (!("error" in data)) {
             return true;

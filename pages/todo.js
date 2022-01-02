@@ -3,6 +3,7 @@ import Layout from "@/global/Layout";
 import Content from "@/app/Content";
 import Sidebar from "@/global/Sidebar";
 import Mobilebar from "@/global/Mobilebar";
+import UserAccountButton from "@/global/UserAccountButton";
 
 const Todo = () => {
     return (
@@ -11,6 +12,7 @@ const Todo = () => {
                 <Mobilebar/>
                 <Sidebar/>
                 <Content/>
+                <UserAccountButton/>
             </Layout>
             <Footer/>
         </div>
