@@ -38,7 +38,7 @@ const getTaskFulfiled = (state, action) => {
 };
 
 const addTaskFulfiled = (state, action) => {
-    console.log(state);
+
     state.push(action.payload.response);
 };
 

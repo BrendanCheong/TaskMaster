@@ -4,8 +4,8 @@ import Mail from "@/SVG/Mail";
 
 const Footer = () => {
     return (
-        <>
-            <div className="max-w-screen-xl px-4 py-6 mx-auto space-y-5 overflow-hidden bg-transparent sm:px-6 lg:px-8 h-1/6">
+        <div className="bg-zinc-100">
+            <div className="w-screen max-w-screen-xl px-4 py-6 mx-auto space-y-5 overflow-hidden bg-transparent sm:px-6 lg:px-8 h-1/6">
                 <h1 className="text-xl text-center text-black font-poppins">Get In Touch With Me!</h1>
                 <div className="flex justify-center mt-8 space-x-6">
                     <a href="https://www.linkedin.com/in/brendan-cheong-ern-jie/" className="text-black" target="_blank"
@@ -23,7 +23,7 @@ const Footer = () => {
                     Made by Brendan Cheong.
                 </p>
             </div>
-        </>
+        </div>
     );
 };
 
