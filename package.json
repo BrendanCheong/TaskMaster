@@ -33,7 +33,7 @@
         "yup": "^0.32.11"
     },
     "devDependencies": {
-        "autoprefixer": "^10.4.0",
+        "autoprefixer": "^10.4.1",
         "eslint": "8.5.0",
         "eslint-config-next": "12.0.7",
         "postcss": "^8.4.5",
