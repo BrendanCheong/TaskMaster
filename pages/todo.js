@@ -4,6 +4,7 @@ import Content from "@/app/Content";
 import Sidebar from "@/global/Sidebar";
 import Mobilebar from "@/global/Mobilebar";
 import UserAccountButton from "@/global/UserAccountButton";
+import ViewTask from "@/app/ViewTask";
 
 const Todo = () => {
     return (
@@ -11,7 +12,8 @@ const Todo = () => {
             <Layout>
                 <Mobilebar/>
                 <Sidebar/>
-                <Content/>
+                {/* <Content/> */}
+                <ViewTask/>
                 <UserAccountButton/>
             </Layout>
             <Footer/>

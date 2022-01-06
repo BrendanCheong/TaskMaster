@@ -1,7 +1,7 @@
 const FilterTaskForm = () => {
     return (
         <>
-            <form className="overflow-hidden bg-white">
+            <form className="overflow-hidden bg-white font-poppins">
                 <div className="px-4 py-2 border-t border-gray-200 sm:grid sm:grid-cols-4 sm:gap-4 sm:items-start sm:pt-5 sm:px-6">
                     <label className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Title keywords</label>
                     <div className="mt-1 sm:mt-0 sm:col-span-3">

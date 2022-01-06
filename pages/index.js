@@ -1,17 +1,12 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import Router from "next/router";
 import { addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { unwrapResult } from "@reduxjs/toolkit";
 import TaskAPI from "@/api/taskAPI";
 import TagAPI from "@/api/tagAPI";
-//(state.tasks[0] ? (state.tasks[0].HTTP ? state.tasks[0].HTTP : state.tasks[0].attributes.title) : "nothing")
-// if state.tasks[0]
-//     if state.tasks[0].HTTP === "LOADING"
-//          render loading
-//     if state.tasks[0].HTTP === "ERROR"
-//          render error
-// else
-//     "nothing"
+import { getRouteMatcher } from "next/dist/shared/lib/router/utils";
+
 const Login = () => {
 
     const dispatch = useDispatch();
@@ -101,7 +96,7 @@ const Login = () => {
             }, ["Tag1", "Tag2", "Tag3"])}>
                 addTask
             </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => state.tasks.map((task) => console.log(task))}>
+            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => Router.push("/todo")}>
                 redirect
             </button>
             <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => handleCompleteClick()}>
