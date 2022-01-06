@@ -75,6 +75,7 @@ const Content = () => {
                         helperText={formik.touched.title && formik.errors.title}
                         onBlur={formik.handleBlur}
                         type="datetime-local"
+                        inputFormat={"dd/MM/yyyy HH:mm"}
                     />
                     <TagsInput
                         selectedTags={(tagArray) => setTagArray(tagArray)}

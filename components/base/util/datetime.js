@@ -1,4 +1,5 @@
-import moment from "moment";
+import { format, parseISO } from "date-fns";
+
 
 /**
  * TODO: 
@@ -10,12 +11,23 @@ import moment from "moment";
  */
 
 /**
- * Turns string into proper format for API to consume.
+ * Turns date into proper string format for API to consume.
  * @param {Date} date the datetime in string form
  * @returns {string} the formatted date after processing
  */
 function processDate(date) {
-    return moment(date).format("DD/MM/YYYY HH:mm");
+    const formattedDate = format(date, ("dd/MM/yyyy HH:mm"));
+    return formattedDate;
+}
+
+/**
+ * Turns the string into a proper date object format for Javascript.
+ * @param {string} date 
+ * @returns {date} the date object from string
+ */
+export function processString(date) {
+    const formattedDate = format(parseISO(date), "dd/MM/yyyy HH:mm");
+    return formattedDate;
 }
 
 //console.log(processDate(new Date()));

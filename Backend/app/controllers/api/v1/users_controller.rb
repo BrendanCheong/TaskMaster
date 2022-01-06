@@ -35,6 +35,7 @@ module Api
             # only works if the user has a valid JWT token
             # token is the exact same user data as you have before
             def refresh
+                puts decoded_token
                 token = AuthenticationTokenService.encode(decoded_token)
                 cookie_time(token)
 

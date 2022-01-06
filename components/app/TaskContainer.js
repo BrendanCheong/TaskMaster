@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { processString } from "../base/util/datetime";
 import { getTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import Tasks from "@/app/Tasks";
 
@@ -11,6 +12,7 @@ const TaskContainer = () => {
     useEffect(() => {
         dispatch(getTaskAsync());
         // runs once or when tasks array changes
+        console.log(tasks);
     }, [dispatch]);
 
     return (
@@ -20,6 +22,8 @@ const TaskContainer = () => {
                     <Tasks title={task.attributes.title} 
                         content={task.attributes.content} 
                         tags={task.attributes.tags}
+                        status={task.attributes.status}
+                        endDate={processString(task.attributes.endDate)}
                         key={task.id}
                     />
                 </>)}

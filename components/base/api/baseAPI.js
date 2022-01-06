@@ -12,10 +12,6 @@ import { refreshToken } from "../util/refreshToken";
  * @returns {object} the data as it is, can be object[]
  */
 async function processAttributes(query, endpoint) {
-    const token = await refreshToken();
-    if (!token) {
-        return token;
-    }
     return query.then((resp) => {
         const data = resp.data.data;
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
@@ -33,10 +29,6 @@ async function processAttributes(query, endpoint) {
  * @returns {boolean} whether message was error or success/ false or true.
  */
 async function getMessage(query, endpoint) {
-    const token = await refreshToken();
-    if (!token) {
-        return token;
-    }
     return query.then((resp) => {
         const data = resp.data;
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") {
