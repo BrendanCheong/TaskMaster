@@ -1,26 +1,44 @@
+import { useDispatch } from "react-redux";
+import { viewTask } from "@/redux/taskViewSlice";
 import Tags from "./Tags";
 import PropTypes from "prop-types";
 
-const Tasks = ({ title, content, tags, status, endDate }) => {
+const Tasks = ({ title, content, tags, status, endDate, index }) => {
+
+    const dispatch = useDispatch();
+
+    const handleViewTask = () => {
+        dispatch(viewTask({
+            title: title,
+            content: content,
+            endDate: endDate,
+            status: status,
+            tags: tags,
+        }));
+    };
+
     return (
-        <div className="block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black"> 
-            <div className="max-w-sm overflow-hidden rounded">
-                <div className="px-6 py-4">
-                    <div className="mb-2 text-xl font-bold truncate text-ellipsis">{title}</div>
-                    <p className="text-base text-gray-700 text-ellipsis">
-                        {content}
-                    </p>
-                </div>
-                <div className="px-6 pt-4 pb-2">
-                    {tags.map((tag) => <>
-                        <Tags 
-                            name={tag.tagName}
-                            key={tag.id}
-                        />
-                    </>)}
+        <>
+            <div tabIndex={index} className="block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black
+        focus:bg-indigo-600 focus:text-white focus:outline-none justify-items-start" onClick={() => handleViewTask()}> 
+                <div className="max-w-sm overflow-hidden rounded-md">
+                    <div className="px-6 py-4">
+                        <div className="mb-2 text-xl font-bold truncate text-ellipsis">{title}</div>
+                        <p className="text-base text-ellipsis">
+                            {content}
+                        </p>
+                    </div>
+                    <div className="px-6 pt-4 pb-2">
+                        {tags.map((tag) => <>
+                            <Tags 
+                                name={tag.tagName}
+                                key={tag.id}
+                            />
+                        </>)}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
@@ -38,4 +56,5 @@ Tasks.propTypes = {
     })).isRequired,
     status: PropTypes.bool.isRequired,
     endDate: PropTypes.string.isRequired,
+    index: PropTypes.string.isRequired,
 };

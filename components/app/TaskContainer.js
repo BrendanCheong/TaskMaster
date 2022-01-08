@@ -25,6 +25,7 @@ const TaskContainer = () => {
                         status={task.attributes.status}
                         endDate={processString(task.attributes.endDate)}
                         key={task.id}
+                        index={task.id}
                     />
                 </>)}
             </div>
