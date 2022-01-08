@@ -37,5 +37,5 @@ Tasks.propTypes = {
         updated_at: PropTypes.string.isRequired,
     })).isRequired,
     status: PropTypes.bool.isRequired,
-    endDate: PropTypes.instanceOf(Date).isRequired,
+    endDate: PropTypes.string.isRequired,
 };

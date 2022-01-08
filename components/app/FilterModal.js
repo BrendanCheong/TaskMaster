@@ -20,7 +20,7 @@ const FilterModal = ({ open, handleModalState }) => {
                                 </svg>
                             </div>
 
-                            <div className="w-full h-full px-7" id="overflow?">
+                            <div className="w-full h-full px-7" id="Filter Tasks">
                                 <FilterTaskForm/>
                             </div>
                             <div className="flex items-center justify-end w-full p-7">

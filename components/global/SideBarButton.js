@@ -1,7 +1,7 @@
 const SideBarButton = ({ buttonName, buttonFunction, iconPresent }) => {
     return (
         <>
-            <button className="flex flex-row px-5 py-2 space-x-10 text-white transition duration-300 bg-teal-500 shadow-xl hover:bg-teal-700 rounded-xl focus:outline-none focus:ring-4 focus:ring-white active:ring-4 active:ring-white"
+            <button className="flex flex-row px-5 py-2 space-x-10 text-white transition duration-300 bg-teal-500 shadow-xl hover:bg-teal-700 rounded-xl focus:outline-none focus:ring-4 focus-within:ring-white active:ring-4 active:ring-white"
                 onClick={() => buttonFunction()}>
                 { iconPresent 
                     ? 
