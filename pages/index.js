@@ -29,14 +29,16 @@ const Login = () => {
 
     const addTaskButton = async (payload, tagArray) => {
         try {
+            payload["tags"] = tagArray;
+            console.log(payload);
             const taskApi = new TaskAPI();
             const data = await taskApi.taskCreate("/", payload);
             console.log(data);
-            const id = data.id;
-            if (tagArray.length > 0) {
-                await addTagArray(tagArray, id);
-            }
-            dispatch(addTaskAsync(id));
+            // const id = data.id;
+            // if (tagArray.length > 0) {
+            //     await addTagArray(tagArray, id);
+            // }
+            // dispatch(addTaskAsync(id));
         } catch (e) {
             console.error(e);
         }

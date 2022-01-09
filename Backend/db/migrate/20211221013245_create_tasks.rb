@@ -2,7 +2,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
   def change
     create_table :tasks do |t|
       t.string :title
-      t.string :content
+      t.text :content
       t.boolean :status
       t.datetime :endDate
       t.belongs_to :user, null: false, foreign_key: true

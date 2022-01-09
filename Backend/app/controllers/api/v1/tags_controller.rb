@@ -20,22 +20,6 @@ module Api
                 render json: { success: 'Tag deleted successfully!' }, status: 200
             end
 
-            # create tag
-            def create
-                begin
-                    tag_array = tag_params[:tagName].map { |name| 
-                        {
-                            'tagName' => name, 
-                            'task_id' => tag_params[:task_id] 
-                        }
-                    }
-                    tags = Tag.insert_all!(tag_array)
-                    render json: { success: 'Tags created successfully!' }, status: 200
-                rescue Exception => e
-                    render json: { error: e }, status: 422
-                end
-            end
-
             # get all tags
             def index
                 tags = Tag.all
@@ -65,7 +49,7 @@ module Api
             end
 
             def user_id_params
-                return params[:user_id]
+                AuthenticationTokenService.decode(cookies[:token])[:id]
             end
 
             def tagName_params

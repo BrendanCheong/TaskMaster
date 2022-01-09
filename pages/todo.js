@@ -7,6 +7,7 @@ import UserAccountButton from "@/global/UserAccountButton";
 import ViewTask from "@/app/ViewTask";
 import DefaultContent from "@/global/DefaultContent";
 import { useSelector } from "react-redux";
+import { parse } from "date-fns";
 
 const Todo = () => {
 
@@ -27,6 +28,14 @@ const Todo = () => {
                     tags={taskView.tags}
                     status={taskView.status}
                     id={taskView.id}
+                />
+            </>;
+        case("EDIT"):
+            return <>
+                <Content
+                    title={taskView.title}
+                    content={taskView.content}
+                    endDate={parse(taskView.endDate, "dd/MM/yyyy HH:mm", new Date())}
                 />
             </>;
         default:

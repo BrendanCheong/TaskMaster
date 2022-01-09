@@ -13,8 +13,8 @@ export const getTaskAsync = createAsyncThunk(
 
 export const addTaskAsync = createAsyncThunk(
     "task/addTaskAsync/WithTags",
-    async(id) => {
-        const response = await taskApi.taskGetOne(`/${id}`);
+    async(payload) => {
+        const response = await taskApi.taskCreate("/", payload);
         return { response };
     }
 );

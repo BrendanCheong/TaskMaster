@@ -36,7 +36,7 @@ tasks = Task.create([
     {
         id: 3,
         title: "Movie",
-        content: "Watch the new Spiderman Movie",
+        content: "Amazon Web Services or AWS in short, is a subsidiary of Amazon (thank you Papa Bezos) that provides on-demand cloud computing platform and APIs for companies and individuals. To clarify the technical jargon cloud computing, it is simply an access to required services such as servers, databases, networking without having to care about managing the actual computer resource. I know, sounds fancy, but that's just the tip of the iceberg of what AWS can offer. Once again, I'm no AWS sensei so we'll only be focusing on one of the services AWS offers - Lambda.",
         status: false,
         endDate: DateTime.strptime("21/12/2022 19:45", "%d/%m/%Y %H:%M"),
         user_id: 2

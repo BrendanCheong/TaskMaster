@@ -16,15 +16,21 @@ module Api
 
             # create task
             def create
-                input = task_params
-                input[:endDate] = DateTime.strptime(task_params[:endDate], '%d/%m/%Y %H:%M')
-                input[:user_id] = decoded_token[:id]
-                task = Task.new(input)
-
-                if task.save
-                    render json: TaskSerializer.new(task).serialized_json, status: 200
-                else
-                    render json: { error: task.errors.messages }, status: 422
+                begin
+                    input = task_params
+                    input[:endDate] = DateTime.strptime(input[:endDate], '%d/%m/%Y %H:%M')
+                    input[:user_id] = decoded_token[:id]
+                    task = Task.new(input)
+                    if task.save!
+                        if params[:tags].length() > 0
+                            create_tags(params[:tags], task[:id])
+                        end
+                        render json: TaskSerializer.new(task).serialized_json, status: 200
+                    else
+                        raise Exception.new task.errors.messages
+                    end
+                rescue Exception => e
+                    render json: { error: e }, status: 422
                 end
             end
 
@@ -65,7 +71,7 @@ module Api
             private
 
             def task_params
-                params.require(:task).permit(:title, :content, :status, :endDate)
+                params.require(:task).permit(:title, :content, :status, :endDate, :tags => [])
             end
 
             def decoded_token
@@ -74,6 +80,16 @@ module Api
 
             def tags_params
                 return params.permit(tagName: [])["tagName"].uniq
+            end
+
+            def create_tags(tags, id)
+                tag_array = tags.map { |name| 
+                    {
+                        'tagName' => name, 
+                        'task_id' => id
+                    }
+                }
+                tags = Tag.insert_all!(tag_array)
             end
         end
     end

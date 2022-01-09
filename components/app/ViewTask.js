@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { viewTaskToggleStatus } from "@/redux/taskViewSlice";
+import { viewTaskToggleStatus, editTaskState } from "@/redux/taskViewSlice";
 import { toggleTaskStatusAsync } from "@/redux/redux-thunks/taskAsync";
 import { unwrapResult } from "@reduxjs/toolkit";
 import PropTypes from "prop-types";
@@ -39,7 +39,10 @@ const ViewTask = ({
                             : ""
                     )}>{title}</h1>
                     <div className="flex flex-row p-3 space-x-6 text-base md:absolute md:right-0 md:top-0 font-roboto">
-                        <button className="px-4 py-2 text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-700">edit</button>
+                        <button className="px-4 py-2 text-white transition duration-300 bg-indigo-500 rounded-md hover:bg-indigo-700"
+                            onClick={() => dispatch(editTaskState({ showState: "EDIT" }))}>
+                            edit
+                        </button>
                         <button className="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-md hover:bg-red-700">delete</button>
                         {status
                             ? <>
@@ -97,7 +100,7 @@ const ViewTask = ({
 
 export default ViewTask;
 
-ViewTask.PropTypes = {
+ViewTask.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({

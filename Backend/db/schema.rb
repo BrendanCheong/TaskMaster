@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_12_21_013313) do
 
   create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
-    t.string "content"
+    t.text "content"
     t.boolean "status"
     t.datetime "endDate", precision: 6
     t.bigint "user_id", null: false
