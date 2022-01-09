@@ -14,6 +14,7 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
             endDate: endDate,
             status: status,
             tags: tags,
+            id: index,
         }));
     };
 
@@ -32,7 +33,7 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
                         {tags.map((tag) => <>
                             <Tags 
                                 name={tag.tagName}
-                                key={tag.id}
+                                key={`${tag.tagName}  ${tag.id}`}
                             />
                         </>)}
                     </div>

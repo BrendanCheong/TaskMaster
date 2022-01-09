@@ -14,13 +14,20 @@ const Todo = () => {
 
     const renderContent = (state) => {
         switch(state) {
-        case("EDIT"):
+        case("ADD"):
             return <>
                 <Content/>
             </>;
         case("VIEW"):
             return <>
-                <ViewTask/>
+                <ViewTask
+                    title={taskView.title}
+                    content={taskView.content}
+                    endDate={taskView.endDate}
+                    tags={taskView.tags}
+                    status={taskView.status}
+                    id={taskView.id}
+                />
             </>;
         default:
             return <>

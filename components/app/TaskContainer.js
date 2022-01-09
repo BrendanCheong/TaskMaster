@@ -12,7 +12,6 @@ const TaskContainer = () => {
     useEffect(() => {
         dispatch(getTaskAsync());
         // runs once or when tasks array changes
-        console.log(tasks);
     }, [dispatch]);
 
     return (
@@ -24,7 +23,7 @@ const TaskContainer = () => {
                         tags={task.attributes.tags}
                         status={task.attributes.status}
                         endDate={processString(task.attributes.endDate)}
-                        key={task.id}
+                        key={`${task.attributes.title} ${task.id}`}
                         index={task.id}
                     />
                 </>)}

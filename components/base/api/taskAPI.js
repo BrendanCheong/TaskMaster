@@ -35,6 +35,13 @@ class TaskAPI extends BaseAPI {
         return super.getArray(super.slugCombiner(slug));
     }
 
+    /**
+     * Find a specific task that belongs to the user based on Id.
+     * Uses JWT to find specific user.
+     * If user tries to find a task not their own, returns { data: null }
+     * @param {string} slug 
+     * @returns {object} the specific task requested for.
+     */
     taskGetOne(slug) {
         return super.get(super.slugCombiner(slug));
     }
