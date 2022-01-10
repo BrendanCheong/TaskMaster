@@ -16,21 +16,23 @@ module Api
 
             # create task
             def create
-                begin
-                    input = task_params
-                    input[:endDate] = DateTime.strptime(input[:endDate], '%d/%m/%Y %H:%M')
-                    input[:user_id] = decoded_token[:id]
-                    task = Task.new(input)
-                    if task.save!
-                        if params[:tags].length() > 0
-                            create_tags(params[:tags], task[:id])
+                ActiveRecord::Base.transaction do
+                    begin
+                        input = task_params
+                        input[:endDate] = DateTime.strptime(input[:endDate], '%d/%m/%Y %H:%M')
+                        input[:user_id] = decoded_token[:id]
+                        task = Task.new(input)
+                        if task.save!
+                            if params[:tags].length() > 0
+                                create_tags(params[:tags], task[:id])
+                            end
+                            render json: TaskSerializer.new(task).serialized_json, status: 200
+                        else
+                            raise Exception.new task.errors.messages
                         end
-                        render json: TaskSerializer.new(task).serialized_json, status: 200
-                    else
-                        raise Exception.new task.errors.messages
+                    rescue Exception => e
+                        render json: { error: e }, status: 422
                     end
-                rescue Exception => e
-                    render json: { error: e }, status: 422
                 end
             end
 
@@ -52,12 +54,26 @@ module Api
 
             # update task by id
             def update
-                task = Task.find_by(id: params[:id])
-
-                if task.update(task_params)
-                    render json: TaskSerializer.new(task).serialized_json
-                else
-                    render json: { error: task.errors.messages }, status: 422
+                ActiveRecord::Base.transaction do
+                    begin
+                        task = Task.find_by(id: params[:id])
+                        input = task_params
+                        input[:endDate] = DateTime.strptime(input[:endDate], '%d/%m/%Y %H:%M')
+                        input[:user_id] = decoded_token[:id]
+                        if task.update!(input)
+                            if params[:tagIds].length() > 0
+                                delete_tags(params[:tagIds])
+                            end
+                            if params[:tags].length() > 0
+                                create_tags(params[:tags], task[:id])
+                            end
+                            render json: TaskSerializer.new(task).serialized_json
+                        else
+                            raise Exception.new task.errors.messages
+                        end
+                    rescue Exception => e
+                        render json: { error: e }, status: 422
+                    end
                 end
             end
 
@@ -90,6 +106,13 @@ module Api
                     }
                 }
                 tags = Tag.insert_all!(tag_array)
+            end
+
+            # delete an array of tag ids
+            def delete_tags(tagIds)
+                tagIds.each do |tag_id|
+                    tag = Tag.find_by(id: tag_id).destroy!
+                end
             end
         end
     end

@@ -4,10 +4,6 @@ module Api
 
             skip_before_action :authenticate, only: %i[login register]
 
-            """
-            TODO:
-            1) remove delete and get all users routes
-            """
             def login
                 user = User.find_by(email: params[:email])
 
@@ -42,13 +38,6 @@ module Api
                 render json: { success: 'User token refreshed' }, status: 200
             end
 
-            # GET
-            def index
-                users = User.all
-
-                render json: UserSerializer.new(users).serialized_json, status: 200
-            end
-
             # GET/:id
             def show
                 @user = User.find_by(id: decoded_token[:id])
@@ -65,14 +54,6 @@ module Api
                 else
                     render json: { error: user.errors.messages }, status: 422
                 end
-            end
-
-            # DELETE/:id
-            def destroy
-                user = User.find_by(id: params[:id]).destroy!
-
-                render json: { success: 'User deleted successfully!' }, status: 200
-                #head :no_content
             end
 
             # put this at the bottom for headers that need Json data

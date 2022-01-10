@@ -15,9 +15,9 @@ Rails.application.routes.draw do
       post '/users/register', to: "users#register"
       post '/tasks/tag_filter', to: "tasks#task_filter"
 
-      resources :users, only: [:index, :update, :show, :destroy]
+      resources :users, only: [:update, :show]
       resources :tasks
-      resources :tags, only: [:index, :show, :destroy]
+      resources :tags, only: [:index, :show]
     end
   end
 end

@@ -12,13 +12,6 @@ module Api
                 tags = Tag.joins(task: :user).where(user: { id: user_id_params })
                 render json: TagSerializer.new(tags).serialized_json, status: 200
             end
-            
-            # delete a tag by id
-            def destroy
-                tag = Tag.find_by(id: params[:id]).destroy!
-
-                render json: { success: 'Tag deleted successfully!' }, status: 200
-            end
 
             # get all tags
             def index
