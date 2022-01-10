@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { format, parseISO, parse } from "date-fns";
 
 
 /**
@@ -21,13 +21,22 @@ function processDate(date) {
 }
 
 /**
- * Turns the string into a proper date object format for Javascript.
+ * Turns the string into a proper desired string date formatted.
  * @param {string} date 
- * @returns {date} the date object from string
+ * @returns {string} the date object from string
  */
 export function processString(date) {
     const formattedDate = format(parseISO(date), "dd/MM/yyyy HH:mm");
     return formattedDate;
+}
+
+/**
+ * Converts string in the dd/MM/yyyy HH:mm format into a Date object.
+ * @param {string} date
+ * @returns {Date} the date object 
+ */
+export function processStringToDate(date) {
+    return parse(date, "dd/MM/yyyy HH:mm", new Date());
 }
 
 //console.log(processDate(new Date()));

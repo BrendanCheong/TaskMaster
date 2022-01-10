@@ -19,9 +19,11 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
     };
 
     return (
-        <>
-            <div tabIndex={index} className="block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black
-        focus:bg-indigo-600 focus:text-white focus:outline-none justify-items-start " onClick={() => handleViewTask()}> 
+        <div>
+            <div tabIndex={index} 
+                className="block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black
+        focus:bg-indigo-600 focus:text-white focus:outline-none justify-items-start " 
+                onClick={() => handleViewTask()}> 
                 <div className="max-w-sm overflow-hidden rounded-md">
                     <div className="px-6 py-4">
                         <div className="mb-2 text-xl font-bold">{title}</div>
@@ -33,16 +35,16 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
                         
                     </div>
                     <div className="px-6 pt-4 pb-2">
-                        {tags.map((tag) => <>
+                        {tags.map((tag) => <div key={`${tag.tagName}  ${tag.id}`}>
                             <Tags 
                                 name={tag.tagName}
-                                key={`${tag.tagName}  ${tag.id}`}
+                                id={tag.id}
                             />
-                        </>)}
+                        </div>)}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

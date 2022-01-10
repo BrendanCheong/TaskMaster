@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { addTaskAsync } from "@/redux/redux-thunks/taskAsync";
+import { addTaskAsync, updateTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { viewTask } from "@/redux/taskViewSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import PropTypes from "prop-types";
@@ -11,7 +11,14 @@ import TextField from "@mui/material/TextField";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TagsInput from "./TagsInput";
 
-const Content = ({ title, content, endDate }) => {
+const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
+
+    /**
+     * The old tags array. 
+     */
+    const oldTagArray = tags.length > 0
+        ? tags.map((tag) => tag.id)
+        : tags;
 
     const [tagArray, setTagArray] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -45,13 +52,15 @@ const Content = ({ title, content, endDate }) => {
             title: title,
             content: content,
             endDate: endDate,
-            status: false,
+            status: status,
         },
         onSubmit: (values) => {
             const payload = values;
             payload["tags"] = tagArray;
             payload["endDate"] = processDate(values["endDate"]);
-            submit(payload);
+            editMode 
+                ? edit(payload) 
+                : submit(payload);
         },
         validationSchema: validationTaskSchema,
     });
@@ -63,6 +72,20 @@ const Content = ({ title, content, endDate }) => {
             .then(() => {
                 setLoading(false);
                 payload["id"] = newLastId(tasks);
+                dispatch(viewTask(payload));
+            })
+            .catch((err) => console.error(err));
+    };
+
+    const edit = (payload) => {
+        payload["id"] = id;
+        payload["tagIds"] = oldTagArray;
+        setLoading(true);
+        dispatch(updateTaskAsync(payload))
+            .then(unwrapResult)
+            .then((res) => {
+                setLoading(false);
+                payload["tags"] = res.response.attributes.tags;
                 dispatch(viewTask(payload));
             })
             .catch((err) => console.error(err));
@@ -116,6 +139,7 @@ const Content = ({ title, content, endDate }) => {
                         fullWidth
                         variant="outlined"
                         id="tags"
+                        tagArray={tags.map((tag) => tag.tagName)}
                         name="Add tags"
                         placeholder="Add Task Tags"
                         label="Tags"
@@ -165,10 +189,24 @@ Content.defaultProps = {
     title: "",
     content: "",
     endDate: new Date(),
+    tags: [],
+    status: false,
+    editMode: false,
+    id: "0",
 };
 
 Content.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     endDate: PropTypes.instanceOf(Date),
+    tags: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        tagName: PropTypes.string.isRequired,
+        task_id: PropTypes.number.isRequired,
+        created_at: PropTypes.string.isRequired,
+        updated_at: PropTypes.string.isRequired,
+    })).isRequired,
+    status: PropTypes.bool.isRequired,
+    editMode: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
 };

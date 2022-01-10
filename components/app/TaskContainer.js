@@ -17,16 +17,15 @@ const TaskContainer = () => {
     return (
         <div>
             <div className="overflow-y-scroll h-[36rem] md:h-[56rem] scrollbar-thin scrollbar-thumb-indigo-200 hover:scrollbar-thumb-slate-600 transition duration-300 space-y-3">
-                {tasks.map((task) => <>
+                {tasks.map((task) => <div key={`${task.attributes.title} ${task.id}`}>
                     <Tasks title={task.attributes.title} 
                         content={task.attributes.content} 
                         tags={task.attributes.tags}
                         status={task.attributes.status}
                         endDate={processString(task.attributes.endDate)}
-                        key={`${task.attributes.title} ${task.id}`}
                         index={task.id}
                     />
-                </>)}
+                </div>)}
             </div>
         </div>
     );

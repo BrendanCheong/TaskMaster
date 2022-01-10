@@ -1,6 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { HTTP_STATUS } from "./constants";
-import { getTaskAsync, addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync } from "./redux-thunks/taskAsync";
+import { getTaskAsync, addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync, updateTaskAsync } from "./redux-thunks/taskAsync";
 
 const taskSlice = createSlice({
     name: "tasks",
@@ -18,6 +17,7 @@ const taskSlice = createSlice({
             .addCase(getTaskAsync.fulfilled, getTaskFulfiled)
             .addCase(addTaskAsync.fulfilled, addTaskFulfiled)
             .addCase(toggleTaskStatusAsync.fulfilled, toggleTaskStatusFulfiled)
+            .addCase(updateTaskAsync.fulfilled, updateTaskFulfiled)
             .addCase(deleteTaskAsync.fulfilled, deleteTaskFulfiled);
     },
 });
@@ -49,22 +49,24 @@ const toggleTaskStatusFulfiled = (state, action) => {
     state[index].attributes.status = action.payload.response.attributes.status;
 };
 
+const updateTaskFulfiled = (state, action) => {
+    const index = current(state).findIndex(
+        (task) => task.id === action.payload.response.id
+    );
+    const currentAttributes = state[index].attributes;
+    const response = action.payload.response.attributes;
+
+    currentAttributes.content = response.content;
+    currentAttributes.title = response.title;
+    currentAttributes.status = response.status;
+    currentAttributes.endDate = response.endDate;
+    currentAttributes.tags = response.tags;
+    currentAttributes.updated_at = response.updated_at;
+    state[index].relationships = action.payload.response.relationships;
+};
+
 const deleteTaskFulfiled = (state, action) => {
     return current(state).filter((task) => 
         task.id !== action.payload.response.id
     );
 };
-
-const taskPending = (state) => {
-    console.log("Pending ...");
-    // initial state, will change unless theres an error
-    state.HTTP = HTTP_STATUS.LOADING;
-};
-
-const taskRejected= (state, { error }) => {
-    console.log("Error!");
-    state.HTTP = HTTP_STATUS.ERROR;
-    state.error = error.message;
-};
-
-// once initial state is already loaded, I must do something like .push(error)

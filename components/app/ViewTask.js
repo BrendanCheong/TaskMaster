@@ -86,12 +86,12 @@ const ViewTask = ({
                         ? " opacity-30"
                         : ""
                 )}>
-                    {tags.map((tag) => <>
+                    {tags.map((tag) => <div key={`${tag.tagName} ${tag.id}`}>
                         <span className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full"
-                            key={`${tag.tagName} ${tag.id}`}>
+                        >
                             {`#${tag.tagName}`}
                         </span>
-                    </>)}
+                    </div>)}
                 </section>
             </div>
         </div>

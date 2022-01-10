@@ -14,13 +14,15 @@ const useStyles = makeStyles(theme => ({
 
 const TagsInput = ({ ...props }) => {
     const classes = useStyles();
-    const { selectedTags, placeholder, tags, ...other } = props;
+    const { selectedTags, placeholder, tags, tagArray,...other } = props;
     const [inputValue, setInputValue] = useState("");
-    const [selectedItem, setSelectedItem] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(tagArray);
 
     useEffect(() => {
-        setSelectedItem(tags);
-    }, [tags]);
+        if (selectedItem.length === 0) {
+            setSelectedItem(tags);
+        }
+    }, [tags, selectedItem.length]);
 
     useEffect(() => {
         selectedTags(selectedItem);

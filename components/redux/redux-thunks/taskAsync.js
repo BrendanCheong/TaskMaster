@@ -18,9 +18,17 @@ export const addTaskAsync = createAsyncThunk(
         return { response };
     }
 );
-// can use for updating the task also
+
 export const toggleTaskStatusAsync = createAsyncThunk(
     "task/toggleTaskStatusAsync",
+    async(payload) => {
+        const response = await taskApi.taskPut(`/${payload.id}`, payload);
+        return { response };
+    }
+);
+
+export const updateTaskAsync = createAsyncThunk(
+    "task/updateTaskAsync",
     async(payload) => {
         const response = await taskApi.taskPut(`/${payload.id}`, payload);
         return { response };
