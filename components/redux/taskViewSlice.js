@@ -34,6 +34,17 @@ const taskViewSlice = createSlice({
         editTaskState: (state, action) => {
             state.showState = action.payload.showState;
         },
+
+        resetTaskState: (state, action) => {
+            state.HTTP = HTTP_STATUS.LOADING;
+            state.title = "";
+            state.content = "";
+            state.endDate = "";
+            state.status = false,
+            state.id = "";
+            state.tags = [];
+            state.showState = action.payload.showState;
+        },
     },
 });
 
@@ -41,6 +52,7 @@ export const {
     viewTask,
     viewTaskToggleStatus,
     editTaskState,
+    resetTaskState,
 } = taskViewSlice.actions;
 
 export default taskViewSlice.reducer;

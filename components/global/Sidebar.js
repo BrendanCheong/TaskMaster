@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SideBarContext } from "./Layout";
-import  { editTaskState } from "@/redux/taskViewSlice";
+import { resetTaskState } from "@/redux/taskViewSlice";
 import SideBarButton from "@/global/SideBarButton";
 import Logo from "@/global/Logo";
 import TaskContainer from "@/app/TaskContainer";
@@ -18,7 +18,7 @@ const Sidebar = () => {
     };
 
     const addTask = () => {
-        dispatch(editTaskState({
+        dispatch(resetTaskState({
             showState: "ADD",
         }));
     };

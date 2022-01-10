@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTaskAsync, updateTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { viewTask } from "@/redux/taskViewSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -23,19 +23,6 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
     const [tagArray, setTagArray] = useState([]);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks);
-
-    /**
-     * Creates a new fake id for the newly created task to view the new task created.
-     * Only works on Chrome 92+ and >= Node v16.0
-     * @param {object[]} tasks all current tasks
-     * @returns {string} new fake id to be used for generating task view when adding tasks
-     */
-    const newLastId = (tasks) => {
-        const task = tasks.at(-1);
-        const newId = (parseInt(task.id) + 1).toString();
-        return newId;
-    };
 
     const validationTaskSchema = yup.object({
         title: yup.string().required("Task Title is Required"),
@@ -69,9 +56,10 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
         setLoading(true);
         dispatch(addTaskAsync(payload))
             .then(unwrapResult)
-            .then(() => {
+            .then((res) => {
                 setLoading(false);
-                payload["id"] = newLastId(tasks);
+                payload["id"] = res.response.id;
+                payload["tags"] = res.response.attributes.tags;
                 dispatch(viewTask(payload));
             })
             .catch((err) => console.error(err));

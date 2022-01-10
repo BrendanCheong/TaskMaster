@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { viewTaskToggleStatus, editTaskState } from "@/redux/taskViewSlice";
-import { toggleTaskStatusAsync } from "@/redux/redux-thunks/taskAsync";
+import { viewTaskToggleStatus, editTaskState, resetTaskState } from "@/redux/taskViewSlice";
+import { toggleTaskStatusAsync, deleteTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { unwrapResult } from "@reduxjs/toolkit";
 import PropTypes from "prop-types";
 
@@ -15,18 +15,38 @@ const ViewTask = ({
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+    const [deleteButtonLoading, setDeleteButtonLoading] = useState(false);
 
     const handleCompletion = () => {
+
         const payload = {
             id: id,
             status: !status,
+            endDate: endDate,
+            tags: [],
+            tagIds: [],
         };
         setLoading(true);
         dispatch(toggleTaskStatusAsync(payload))
             .then(unwrapResult)
-            .then(() => setLoading(false))
+            .then(() => {
+                setLoading(false);
+                dispatch(viewTaskToggleStatus(payload));
+            })
             .catch((err) => console.error(err));
-        dispatch(viewTaskToggleStatus(payload));
+    };
+
+    const handleDelete = () => {
+        setDeleteButtonLoading(true);
+        dispatch(deleteTaskAsync(id))
+            .then(unwrapResult)
+            .then(() => {
+                setDeleteButtonLoading(false);
+                dispatch(resetTaskState({
+                    showState: "DEFAULT",
+                }));
+            })
+            .catch((err) => console.error(err));
     };
 
     return (
@@ -43,11 +63,34 @@ const ViewTask = ({
                             onClick={() => dispatch(editTaskState({ showState: "EDIT" }))}>
                             edit
                         </button>
-                        <button className="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-md hover:bg-red-700">delete</button>
+                        {
+                            deleteButtonLoading
+                                ? <>
+                                    <button className="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-md"
+                                    >   
+                                    Loading...
+                                    </button>
+                                </>
+                                : <>
+                                    <button className="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-md hover:bg-red-700"
+                                        onClick={() => handleDelete()}>   
+                                        delete
+                                    </button>
+                                </>
+                        }
                         {status
                             ? <>
-                                <button className="px-4 py-2 text-sm text-white transition duration-300 bg-teal-500 rounded-md hover:bg-teal-700"
-                                    onClick={() => handleCompletion()}>Completed</button>
+                                {
+                                    loading
+                                        ? <>
+                                            <button className="px-4 py-2 text-sm text-white transition duration-300 bg-teal-500 rounded-md "
+                                            >Loading...</button>
+                                        </>
+                                        : <>
+                                            <button className="px-4 py-2 text-sm text-white transition duration-300 bg-teal-500 rounded-md hover:bg-teal-700"
+                                                onClick={() => handleCompletion()}>Completed</button>
+                                        </>
+                                }
                             </>
                             : <>
                                 {
