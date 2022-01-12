@@ -8,16 +8,17 @@
  */
 export async function refreshToken(token) {
     try {
+        const headers = {
+            "Content-Type": "application/json",
+            "Accept": "*/*",
+        };
+        if (token) headers["Cookie"] = token;
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/users/refresh`, 
             { 
                 method: "GET",
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "*/*",
-                    "Cookie": token,
-                },
+                headers: headers,
             });
         const data = await response.json();
         if (process.env.NEXT_PUBLIC_APP_ENV === "development") console.log(data);
