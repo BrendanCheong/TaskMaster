@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { refreshToken } from "@/util/refreshToken";
+import { VARIANT } from "@/util/popupTypes";
+import { useSnackbar } from "notistack";
 import UserAPI from "@/api/userAPI";
 import * as yup from "yup";
 
@@ -44,15 +46,26 @@ const UserAccountModal = () => {
             if (bool) {
                 const api = new UserAPI();
                 const response = await api.userUpdateData("/1000", payload);
-                console.log(response);
+                if (response) handlePopup("Updated User Details Successfully", VARIANT.SUCCESS);
             } else if (!bool || "error" in data) {
+                handlePopup("Token Expired! Please Log In Again", VARIANT.WARNING);
                 router.push("/");
-                console.error("token expired");
             }
             setLoading(false);
         } catch(e) {
+            // eslint-disable-next-line no-console
             console.error(e);
+            handlePopup("Authentication Server Error", VARIANT.ERROR);
+            setLoading(false);
         }
+    };
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handlePopup = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+        });
     };
 
     return (
@@ -136,7 +149,7 @@ const UserAccountModal = () => {
                 </div>
                 <div className="flex flex-col gap-3 px-4 pt-2 pb-4 md:px-6">
                     <div className="flex justify-end">
-                        <div className="grid flex-grow grid-cols-1 md:flex-grow-0">
+                        <div className="flex flex-row flex-grow space-x-3 md:flex-grow-0">
                             {
                                 loading
                                     ? <>
@@ -157,7 +170,9 @@ const UserAccountModal = () => {
                                         </button>
                                     </>
                             }
-
+                            <button className="inline-flex items-center justify-center px-4 py-2 text-base font-medium text-white transition duration-300 bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" type="button" onClick={() => router.push("/")}>
+                                Logout
+                            </button>
                         </div>
                     </div>
                 </div>
