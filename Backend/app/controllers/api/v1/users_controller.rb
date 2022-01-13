@@ -19,7 +19,7 @@ module Api
             def register
                 user = User.new(user_params)
 
-                if user.save
+                if user.save && user_params[:password] == params[:confirm_password]
                     token = AuthenticationTokenService.encode(user)
                     render json: { success: 'User created!' }
                 else

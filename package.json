@@ -24,6 +24,7 @@
         "formik": "^3.0.0-next.8",
         "immer": "^9.0.7",
         "next": "^12.0.7",
+        "notistack": "^2.0.3",
         "prop-types": "^15.8.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
