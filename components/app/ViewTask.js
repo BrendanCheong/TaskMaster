@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { viewTaskToggleStatus, editTaskState, resetTaskState } from "@/redux/taskViewSlice";
 import { toggleTaskStatusAsync, deleteTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { VARIANT } from "@/util/popupTypes";
+import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 
 const ViewTask = ({ 
@@ -16,6 +18,7 @@ const ViewTask = ({
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [deleteButtonLoading, setDeleteButtonLoading] = useState(false);
+    
 
     const handleCompletion = () => {
 
@@ -33,7 +36,7 @@ const ViewTask = ({
                 setLoading(false);
                 dispatch(viewTaskToggleStatus(payload));
             })
-            .catch((err) => console.error(err));
+            .catch((err) => handlePopup(`Toggling Task Error: ${err}`, VARIANT.ERROR));
     };
 
     const handleDelete = () => {
@@ -46,7 +49,15 @@ const ViewTask = ({
                     showState: "DEFAULT",
                 }));
             })
-            .catch((err) => console.error(err));
+            .catch((err) => handlePopup(`Deleting Task Error: ${err}`, VARIANT.ERROR));
+    };
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handlePopup = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+        });
     };
 
     return (

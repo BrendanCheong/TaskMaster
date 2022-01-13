@@ -1,9 +1,5 @@
 import axios from "axios";
-import { refreshToken } from "../util/refreshToken";
-/** //TODO: 1) Get rid of all the console logs at production!
- * 2) get rid of console.errors before using useSWR
- * 
- */
+// import { refreshToken } from "../util/refreshToken";
 /**
  * Processes the main data, has attributes, type and most importantly ID.
  * Only outputs the first one

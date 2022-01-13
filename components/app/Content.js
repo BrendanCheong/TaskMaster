@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { addTaskAsync, updateTaskAsync } from "@/redux/redux-thunks/taskAsync";
 import { viewTask } from "@/redux/taskViewSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { VARIANT } from "@/util/popupTypes";
+import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import processDate from "@/util/datetime";
 import * as yup from "yup";
@@ -62,7 +64,7 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                 payload["tags"] = res.response.attributes.tags;
                 dispatch(viewTask(payload));
             })
-            .catch((err) => console.error(err));
+            .catch((err) => handlePopup(`Add Task Error: ${err}` , VARIANT.ERROR));
     };
 
     const edit = (payload) => {
@@ -76,7 +78,15 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                 payload["tags"] = res.response.attributes.tags;
                 dispatch(viewTask(payload));
             })
-            .catch((err) => console.error(err));
+            .catch((err) => handlePopup(`Edit Task Error: ${err}` , VARIANT.ERROR));
+    };
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handlePopup = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+        });
     };
 
     return (

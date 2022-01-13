@@ -1,114 +1,63 @@
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import Router from "next/router";
-import { addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync } from "@/redux/redux-thunks/taskAsync";
-import { unwrapResult } from "@reduxjs/toolkit";
-import TaskAPI from "@/api/taskAPI";
-import TagAPI from "@/api/tagAPI";
-import { getRouteMatcher } from "next/dist/shared/lib/router/utils";
+import { useState } from "react";
+import Image from "next/image";
+import cool_background from "../public/cool_background.png";
+import Register from "@/home/Register";
+import Login from "@/home/Login";
 
-const Login = () => {
+const Home = () => {
 
-    const dispatch = useDispatch();
-    // grab current store's state, we choose task state
-    const tasks = useSelector((state) => state.tasks);
-    const state = useSelector((state) => state);
+    const [flip, setFlipped] = useState(false);
+    const [disable, setDisable] = useState(false);
 
-    const addTagArray = async (tagArray, id) => {
-        try {
-            const tagApi = new TagAPI();
-            const tagResponse = await tagApi.tagCreate("/", {
-                tagName: tagArray,
-                task_id: id,
-            });
-            return tagResponse;
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const addTaskButton = async (payload, tagArray) => {
-        try {
-            payload["tags"] = tagArray;
-            console.log(payload);
-            const taskApi = new TaskAPI();
-            const data = await taskApi.taskCreate("/", payload);
-            console.log(data);
-            // const id = data.id;
-            // if (tagArray.length > 0) {
-            //     await addTagArray(tagArray, id);
-            // }
-            // dispatch(addTaskAsync(id));
-        } catch (e) {
-            console.error(e);
-        }
-
-    };
-
-    const handleCompleteClick = () => {
-        // must have id!, also only 1 argument!
-        dispatch(
-            toggleTaskStatusAsync({
-                "status": !tasks[0].attributes.status,
-                "id": 1,
-            })
-        );
-    };
-
-    const handleDeleteClick = (id) => {
-        dispatch(deleteTaskAsync(id));
-    };
-
-    const loginPost = async() => {
-        try {
-            const post = {
-                "email": "john@gmail.com",
-                "password": "password",
-            };
-            const response = await axios.post("http://localhost:3000/api/v1/users/login", post, { withCredentials: true });
-            console.log(response.data);
-        } catch(e) {
-            console.error(e.response);
-        }
-    };
-
-    const refresh = async () => {
-        try {
-            const response = await axios.get("http://localhost:3000/api/v1/users/refresh", {  withCredentials: true  });
-            console.log(response.data);
-        } catch(e) {
-            console.error(e.response.data);
+    const handleFlip = () => {
+        setFlipped(!flip);
+        if (!disable) {
+            setTimeout(() => {
+                setDisable(true);
+            }, 1000);
+        } else {
+            setDisable(false);
         }
     };
 
     return (
-        <div className="flex items-center justify-center place-content-center place-self-center" id="temporary">
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => loginPost()}>
-                Login
-            </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => refresh()}>
-                Register
-            </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => addTaskButton({
-                // form has to validate and create the new task
-                title: "Pills",
-                content: "Take some pills",
-                status: false,
-                endDate: "27/1/2022 11:00",
-            }, ["Tag1", "Tag2", "Tag3"])}>
-                addTask
-            </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => Router.push("/todo")}>
-                redirect
-            </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => handleCompleteClick()}>
-                {"toggle " + tasks[0]}
-            </button>
-            <button className="px-5 py-2 bg-red-500 rounded-lg hover:bg-red-700" onClick={() => handleDeleteClick(8)}>
-                delete
-            </button>
+        <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden place-content-center place-self-center -z-10" id="register form">
+            <Image
+                alt="background"
+                src={cool_background}
+                layout="fill"
+                className="object-cover object-center bg-cover pointer-events-none"
+                quality={100}
+                priority={true}
+            />
+            <div className="h-96 [perspective:600px] z-50 w-96 md:w-[30rem]">
+                <div className={"w-full h-full [transform-style:preserve-3d] [transition:_transform_1s] relative" + (
+                    flip
+                        ? " [transform:rotateY(180deg)]"
+                        : ""
+                )} id="flip"
+                >
+                    <div className="absolute w-full h-full text-white font-poppins [-webkit-backface-visibility:hidden] [backface-visibility:hidden] bottom-10" id="front">
+                        {
+                            !disable &&
+                            <>
+                                <Login
+                                    flip={flip}
+                                    setFlipped={handleFlip}
+                                />
+                            </>
+                        }
+                    </div>
+                    <div className="absolute w-full h-full text-white font-poppins [-webkit-backface-visibility:hidden] [backface-visibility:hidden] [transform:rotateY(180deg)] bottom-10" id="back">
+                        <Register
+                            flip={flip}
+                            setFlipped={handleFlip}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default Login;
+export default Home;

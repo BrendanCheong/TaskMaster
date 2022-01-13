@@ -19,7 +19,7 @@ module Api
             def register
                 user = User.new(user_params)
 
-                if user.save
+                if user.save && user_params[:password] == params[:confirm_password]
                     token = AuthenticationTokenService.encode(user)
                     render json: { success: 'User created!' }
                 else
@@ -45,14 +45,14 @@ module Api
                 render json: UserSerializer.new(@user).serialized_json, status: 200
             end
 
-            # PUT/:id
+            # User must have 2 same passwords to update User details, authenticated using JWT
             def update
                 user = User.find_by(id: decoded_token[:id])
 
-                if user.update(user_params) && user.authenticate(params[:confirm_password])
+                if user.update(user_params) && user_params[:password] == params[:confirm_password]
                     render json: { success: 'User details updated!' }
                 else
-                    render json: { error: user.errors.messages }, status: 422
+                    render json: { error: 'User Unsuccessfully Updated' }, status: 422
                 end
             end
 

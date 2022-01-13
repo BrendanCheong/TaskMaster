@@ -11,7 +11,7 @@ const UserModal = ({ open, handleModalState }) => {
                 onClose={handleModalState}
             >
                 <div className="absolute inset-0 flex items-center justify-center w-full h-full">
-                    <div className="relative flex w-11/12 bg-white rounded-lg h-11/12 md:w-1/2 md:h-1/2">
+                    <div className="relative flex w-11/12 bg-white rounded-lg h-11/12 md:w-1/2 md:h-7/12">
                         <div className="flex flex-col items-start w-full">
                             <div className="flex items-center w-full text-center p-7">
                                 <h1 className="text-lg font-bold text-gray-900 font-poppins">Change User Details</h1>
