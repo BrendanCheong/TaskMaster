@@ -43,12 +43,17 @@ module Api
             end
 
             # find task by tag names array, duplicate names allowed (but not allowed on front-end anyways)
-            def task_filter
-                tasks = Task.includes(:tags)
-                    .where(tags: { tagName: tags_params })
-                    .where(user_id: decoded_token[:id])
-                    .pluck(:id)
-                answer = Task.where(id: tasks)
+            def tag_filter
+                answer = ''
+                if tags_params.length() == 0
+                    answer = Task.where(user_id: decoded_token[:id])
+                else
+                    tasks = Task.includes(:tags)
+                        .where(tags: { tagName: tags_params })
+                        .where(user_id: decoded_token[:id])
+                        .pluck(:id)
+                    answer = Task.where(id: tasks)
+                end
                 render json: TaskSerializer.new(answer).serialized_json, status: 200
             end
 
@@ -95,7 +100,7 @@ module Api
             end
 
             def tags_params
-                return params.permit(tagName: [])["tagName"].uniq
+                return params.permit(tagName: [])['tagName'].uniq
             end
 
             def create_tags(tags, id)
