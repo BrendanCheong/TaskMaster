@@ -29,6 +29,7 @@ const Home = () => {
                 className="object-cover object-center bg-cover pointer-events-none"
                 quality={100}
                 priority={true}
+                as="image"
             />
             <div className="h-96 [perspective:600px] z-50 w-96 md:w-[30rem]">
                 <div className={"w-full h-full [transform-style:preserve-3d] [transition:_transform_1s] relative" + (

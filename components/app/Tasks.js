@@ -21,10 +21,9 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
     return (
         <div>
             <div tabIndex={index} 
-                className="block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black
-        focus:bg-indigo-600 focus:text-white focus:outline-none justify-items-start " 
+                className={"block px-4 py-2.5 hover:text-slate-700 transition duration-300 rounded-md w-11/12 bg-white text-black focus:bg-indigo-600 focus:text-white focus:outline-none justify-items-start " + (status && " bg-opacity-70" || "")} 
                 onClick={() => handleViewTask()}> 
-                <div className="max-w-sm overflow-hidden rounded-md">
+                <div className={"max-w-sm overflow-hidden rounded-md" + (status && " line-through" || "")}>
                     <div className="px-6 py-4">
                         <div className="mb-2 text-xl font-bold">{title}</div>
                         <div className="w-full break-words truncate max-h-56">

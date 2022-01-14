@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 import { createSlice, current } from "@reduxjs/toolkit";
 import { getTaskAsync, addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync, updateTaskAsync } from "./redux-thunks/taskAsync";
 
@@ -5,11 +6,7 @@ const taskSlice = createSlice({
     name: "tasks",
     initialState: [],
     reducers: {
-        deleteTask: (state, action) => {
-            return state.filter((task) =>
-                task.id !== action.payload.id
-            );
-        },
+
     },
 
     extraReducers: (builder) => {
@@ -22,17 +19,12 @@ const taskSlice = createSlice({
     },
 });
 
-// get the actions from the action object
-export const { 
-    addTask,
-    toggleStatus,
-    deleteTask,
-} = taskSlice.actions;
-
 // add reducer to the store
 export default taskSlice.reducer;
 
-// List of actions for async thunks
+/**
+ * List of actions for async thunks. 
+ */
 const getTaskFulfiled = (state, action) => {
     return action.payload.response;
 };

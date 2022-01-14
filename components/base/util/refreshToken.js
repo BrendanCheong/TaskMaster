@@ -3,7 +3,7 @@
 /**
  * Refreshes the existing token of the user. If token expired, return false.
  * This is server side code.
- * @param {string} token the http only cookie
+ * @param {string} token the http only cookie, if no token, just send without adding custom cookie
  * @returns {boolean} either the user refreshes token or has token expired
  */
 export async function refreshToken(token) {

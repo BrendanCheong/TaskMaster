@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useCallback  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { processString } from "../base/util/datetime";
 import { getTaskAsync } from "@/redux/redux-thunks/taskAsync";
+import { getTagsAsync } from "@/redux/redux-thunks/tagAsync";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { VARIANT } from "@/util/popupTypes";
+import { useSnackbar } from "notistack";
 import Tasks from "@/app/Tasks";
 
 const TaskContainer = () => {
@@ -9,10 +13,30 @@ const TaskContainer = () => {
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks);
 
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handlePopup = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+        });
+    };
+
+    const handleError = useCallback((message, variant) => {
+        handlePopup(message, variant);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     useEffect(() => {
-        dispatch(getTaskAsync());
+        dispatch(getTaskAsync())
+            .then(unwrapResult)
+            .then(() => {
+                dispatch(getTagsAsync());
+            })
+            .catch((err) => {
+                handleError(`Displaying All Tasks Error: ${err}`, VARIANT.ERROR);
+            });
         // runs once or when tasks array changes
-    }, [dispatch]);
+    }, [dispatch, handleError ]);
 
     return (
         <div>

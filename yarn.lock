@@ -277,19 +277,6 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@mui/base@5.0.0-alpha.63":
-  version "5.0.0-alpha.63"
-  resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.63.tgz#8646b9b91dae128a474feadac74748c532ffef2c"
-  integrity sha512-/jURXlBAYqZaWw92XfJgc6aiHnDcNVuRxBskub57HXWCMK3OiVVdfUEWJEdCjOacCKiw3+Etc5alI9Omaqrg2g==
-  dependencies:
-    "@babel/runtime" "^7.16.3"
-    "@emotion/is-prop-valid" "^1.1.1"
-    "@mui/utils" "^5.2.3"
-    "@popperjs/core" "^2.4.4"
-    clsx "^1.1.1"
-    prop-types "^15.7.2"
-    react-is "^17.0.2"
-
 "@mui/base@5.0.0-alpha.64":
   version "5.0.0-alpha.64"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.64.tgz#1d108458932a81694efbf49f8b588e0a6bba3ff3"
@@ -302,6 +289,7 @@
     clsx "^1.1.1"
     prop-types "^15.7.2"
     react-is "^17.0.2"
+
 "@mui/lab@^5.0.0-alpha.64":
   version "5.0.0-alpha.64"
   resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.64.tgz#de1ab3ac1fd7af81d29732aad3e6b2462f88794e"
@@ -380,7 +368,7 @@
     jss-plugin-vendor-prefixer "^10.8.2"
     prop-types "^15.7.2"
 
-"@mui/system@^5.2.6", "@mui/system@^5.2.8":
+"@mui/system@^5.2.8":
   version "5.2.8"
   resolved "https://registry.yarnpkg.com/@mui/system/-/system-5.2.8.tgz#c8a7adff69b50fea8ec9cb20a1f5bdab33c247f5"
   integrity sha512-tje1HRubQUk+cDJBG5F83X1j0XzVe+qhellKxByrJVOEEDHoSpbc8UW+NCLSuBBHvOikxihuv3SS4VOWOo2/BQ==
