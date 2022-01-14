@@ -1,7 +1,7 @@
 import { useEffect, useCallback  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { processString } from "../base/util/datetime";
-import { getTaskAsync } from "@/redux/redux-thunks/taskAsync";
+import { getTaskAsyncWithFilters } from "@/redux/redux-thunks/taskAsync";
 import { getTagsAsync } from "@/redux/redux-thunks/tagAsync";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { VARIANT } from "@/util/popupTypes";
@@ -12,6 +12,7 @@ const TaskContainer = () => {
 
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks);
+    const filter = useSelector((state) => state.filter);
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -27,7 +28,8 @@ const TaskContainer = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getTaskAsync())
+        // must send whole filter payload as asyncthunk will handle grabbing only the tagName attribute
+        dispatch(getTaskAsyncWithFilters(filter))
             .then(unwrapResult)
             .then(() => {
                 dispatch(getTagsAsync());
@@ -36,7 +38,7 @@ const TaskContainer = () => {
                 handleError(`Displaying All Tasks Error: ${err}`, VARIANT.ERROR);
             });
         // runs once or when tasks array changes
-    }, [dispatch, handleError ]);
+    }, [dispatch, filter, handleError]);
 
     return (
         <div>

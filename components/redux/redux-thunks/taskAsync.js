@@ -11,6 +11,16 @@ export const getTaskAsync = createAsyncThunk(
     }
 );
 
+export const getTaskAsyncWithFilters = createAsyncThunk(
+    "task/getTaskAsyncWithFilters",
+    async(payload) => {
+        const response = await taskApi.taskFilterTagName("/tag_filter", {
+            tagName: payload.tagName,
+        });
+        return { response };
+    }
+);
+
 export const addTaskAsync = createAsyncThunk(
     "task/addTaskAsync/WithTags",
     async(payload) => {

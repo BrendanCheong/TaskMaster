@@ -1,6 +1,12 @@
 /* eslint-disable valid-jsdoc */
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getTaskAsync, addTaskAsync, toggleTaskStatusAsync, deleteTaskAsync, updateTaskAsync } from "./redux-thunks/taskAsync";
+import { getTaskAsync, 
+    addTaskAsync, 
+    toggleTaskStatusAsync, 
+    deleteTaskAsync, 
+    updateTaskAsync, 
+    getTaskAsyncWithFilters, 
+} from "./redux-thunks/taskAsync";
 
 const taskSlice = createSlice({
     name: "tasks",
@@ -12,6 +18,7 @@ const taskSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getTaskAsync.fulfilled, getTaskFulfiled)
+            .addCase(getTaskAsyncWithFilters.fulfilled, getTaskWithFiltersFulfiled)
             .addCase(addTaskAsync.fulfilled, addTaskFulfiled)
             .addCase(toggleTaskStatusAsync.fulfilled, toggleTaskStatusFulfiled)
             .addCase(updateTaskAsync.fulfilled, updateTaskFulfiled)
@@ -26,6 +33,10 @@ export default taskSlice.reducer;
  * List of actions for async thunks. 
  */
 const getTaskFulfiled = (state, action) => {
+    return action.payload.response;
+};
+
+const getTaskWithFiltersFulfiled = (state, action) => {
     return action.payload.response;
 };
 

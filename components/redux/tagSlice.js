@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HTTP_STATUS } from "./constants";
 import { getTagsAsync } from "./redux-thunks/tagAsync";
-import produce from "immer";
 
 const tagSlice = createSlice({
     name: "tagSlice",
