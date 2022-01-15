@@ -325,6 +325,7 @@ Thumbs.db
 # Ignore master key for decrypting credentials and more.
 Backend/config/master.key
 Backend/config/app_environment_variables.rb
+Backend/*.yml
 
 # Frontend stuff
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
