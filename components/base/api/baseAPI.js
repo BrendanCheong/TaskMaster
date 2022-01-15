@@ -48,12 +48,11 @@ class BaseAPI {
      */
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: process.env.NEXT_PUBLIC_API_URL, // change to process.env later
+            baseURL: "http://taskmaster-api-v1.ap-southeast-1.elasticbeanstalk.com/api/v1", // change to process.env later
             withCredentials: true,
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "*/*",
-                "X-Requested-With": "XMLHttpRequest",
             },
         });
     }
