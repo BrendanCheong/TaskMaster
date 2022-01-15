@@ -18,7 +18,7 @@ default: &default
     password: <%= ENV["DATABASE_PASSWORD"] %>
     port: 3306
     database: Tasks
-    socket: /var/run/mysqld/mysqld.sock
+    #socket: /var/run/mysqld/mysqld.sock
 
 development:
     <<: *default
@@ -55,4 +55,4 @@ production:
     <<: *default
     database: Tasks
     username: <%= ENV["DATABASE_USERNAME"] %>
-    password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
+    password: <%= ENV["DATABASE_PASSWORD"] %>
