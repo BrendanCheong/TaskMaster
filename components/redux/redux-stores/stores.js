@@ -15,5 +15,5 @@ export default configureStore({
         tags: tagReducer,
         filter: filterReducer,
     },
-    middleware: [thunk, refresh, logger],
+    middleware: [thunk, refresh],
 });

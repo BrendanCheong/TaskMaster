@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-export const logger = ({ getState }) => next => async (action) => {
+export const logger = ({ getState }) => next => (action) => {
     console.group(action.type);
     console.info("dispatching", action);
     /**

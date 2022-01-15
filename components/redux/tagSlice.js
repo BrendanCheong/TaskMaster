@@ -5,7 +5,7 @@ import { getTagsAsync } from "./redux-thunks/tagAsync";
 const tagSlice = createSlice({
     name: "tagSlice",
     initialState: {
-        HTTP: HTTP_STATUS.LOADING,
+        HTTP: HTTP_STATUS.SUCCESS,
         tags: [],
     },
     reducers: {
@@ -28,11 +28,11 @@ export const getTagsFulfiled = (state, action) => {
 };
 
 export const getTagsPending = (state, action) => {
-    state.HTTP = HTTP_STATUS.PENDING;
+    state.HTTP = HTTP_STATUS.LOADING;
 };
 
 export const getTagsRejected = (state, action) => {
-    state.HTTP = HTTP_STATUS.REJECTED;
+    state.HTTP = HTTP_STATUS.ERROR;
 };
 
 export default tagSlice.reducer;

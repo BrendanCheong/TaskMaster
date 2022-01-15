@@ -1,6 +1,8 @@
 /* eslint-disable valid-jsdoc */
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getTaskAsync, 
+import { OPTIONS } from "./constants";
+import Fuse from "fuse.js";
+import { 
     addTaskAsync, 
     toggleTaskStatusAsync, 
     deleteTaskAsync, 
@@ -12,12 +14,23 @@ const taskSlice = createSlice({
     name: "tasks",
     initialState: [],
     reducers: {
+        filterStatus: (state, action) => {
+            let output = state;
+            if (action.payload.status) {
+                output = state.filter((task) => task.attributes.status === action.payload.status);
+            }
 
+            if (action.payload.search) {
+                const fuzzy = new Fuse(output, OPTIONS);
+                const result = fuzzy.search(action.payload.search);
+                output = result.map((result) => result.item );
+            }
+            return output;
+        },
     },
 
     extraReducers: (builder) => {
         builder
-            .addCase(getTaskAsync.fulfilled, getTaskFulfiled)
             .addCase(getTaskAsyncWithFilters.fulfilled, getTaskWithFiltersFulfiled)
             .addCase(addTaskAsync.fulfilled, addTaskFulfiled)
             .addCase(toggleTaskStatusAsync.fulfilled, toggleTaskStatusFulfiled)
@@ -29,15 +42,28 @@ const taskSlice = createSlice({
 // add reducer to the store
 export default taskSlice.reducer;
 
+export const {
+    filterStatus,
+    fuzzySearch,
+} = taskSlice.actions;
+
 /**
  * List of actions for async thunks. 
  */
-const getTaskFulfiled = (state, action) => {
-    return action.payload.response;
-};
-
 const getTaskWithFiltersFulfiled = (state, action) => {
-    return action.payload.response;
+    let output = action.payload.response;
+    const filter = action.payload.response.filter;
+    // handles the logic of each of the filters parameters
+    if (filter.status) {
+        output = state.filter((task) => task.attributes.status === filter.status);
+    }
+
+    if (filter.search) {
+        const fuzzy = new Fuse(output, OPTIONS);
+        const result = fuzzy.search(filter.search);
+        output = result.map((result) => result.item );
+    }
+    return output;
 };
 
 const addTaskFulfiled = (state, action) => {

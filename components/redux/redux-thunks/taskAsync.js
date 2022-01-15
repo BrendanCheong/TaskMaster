@@ -3,13 +3,6 @@ import TaskAPI from "@/api/taskAPI";
 
 const taskApi = new TaskAPI();
 // reducer thunks
-export const getTaskAsync = createAsyncThunk(
-    "task/getTaskAsync",
-    async() => {
-        const response = await taskApi.taskGetData("/user_id/300");
-        return { response };
-    }
-);
 
 export const getTaskAsyncWithFilters = createAsyncThunk(
     "task/getTaskAsyncWithFilters",
@@ -17,6 +10,22 @@ export const getTaskAsyncWithFilters = createAsyncThunk(
         const response = await taskApi.taskFilterTagName("/tag_filter", {
             tagName: payload.tagName,
         });
+        // payload is the current filter state, contains: buttonState:str, task:str, tagName[]:str
+        // filterPayload contains the types of filters you want to add
+        // status:bool => whether task is completed or not
+        // search:str => input for fuzzy search of task titles
+        const filterPayload = {
+            status: null,
+            search: null,
+        };
+        if (payload.buttonState !== "all") {
+            filterPayload.status = FILTERS[payload.buttonState];
+        }
+
+        if (payload.task !== "") {
+            filterPayload.search = payload.task;
+        }
+        response["filter"] = filterPayload;
         return { response };
     }
 );
@@ -52,3 +61,8 @@ export const deleteTaskAsync = createAsyncThunk(
         return { response };
     }
 );
+
+const FILTERS = {
+    completed: true,
+    pending: false,
+};

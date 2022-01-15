@@ -16,6 +16,7 @@ const FilterTaskForm = () => {
     };
     
     const Tags = useSelector((state) => state.tags);
+    const Filter = useSelector((state) => state.filter);
     const dispatch = useDispatch();
 
     const validationSchema = yup.object({
@@ -28,9 +29,9 @@ const FilterTaskForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            tagName: [],
-            buttonState: BUTTON_STATE.ALL,
-            task: "",
+            tagName: Filter.tagName,
+            buttonState: Filter.buttonState,
+            task: Filter.task,
         },
         onSubmit: (values) => {
             dispatch(setFilter(values));
@@ -63,17 +64,17 @@ const FilterTaskForm = () => {
                 <div className="px-4 py-2 md:grid md:grid-cols-3 md:items-center md:pt-5 md:px-6 font-roboto">
                     <div className="mt-1 md:mt-0 md:col-span-3">
                         <div className="grid grid-cols-3 gap-3">
-                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 border-300 hover:bg-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:text-white" + 
+                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 hover:text-white border-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" + 
                             (formik.values.buttonState === BUTTON_STATE.ALL && " bg-indigo-600  text-white" )}
                             onClick={() => formik.setFieldValue("buttonState",BUTTON_STATE.ALL)}>
                                 Show all
                             </button>
-                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 border-300 hover:bg-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:text-white"+ 
+                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 hover:text-white border-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"+ 
                             (formik.values.buttonState === BUTTON_STATE.PENDING && " bg-indigo-600  text-white" )}
                             onClick={() => formik.setFieldValue("buttonState",BUTTON_STATE.PENDING)}>
                                 Show In Progress
                             </button>
-                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 border-300 hover:bg-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:text-white"+ 
+                            <button type="button" className={"inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 bg-white border rounded-md shadow-sm hover:bg-indigo-800 hover:text-white border-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"+ 
                             (formik.values.buttonState === BUTTON_STATE.COMPLETED && " bg-indigo-600  text-white" )}
                             onClick={() => formik.setFieldValue("buttonState",BUTTON_STATE.COMPLETED)}>
                                 Show Completed
@@ -88,6 +89,7 @@ const FilterTaskForm = () => {
                             id="tags-filled"
                             variant="outlined"
                             options={Tags.tags}
+                            value={formik.values.tagName}
                             onChange={(event, tagArray) => formik.setFieldValue("tagName", tagArray)}
                             freeSolo
                             renderTags={(value, getTagProps) =>
