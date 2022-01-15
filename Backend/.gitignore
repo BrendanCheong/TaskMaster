@@ -15,5 +15,5 @@
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
-
+*.yml
 /public/assets
