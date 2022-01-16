@@ -11,7 +11,6 @@ const Meta = ({ title, keywords, description }) => {
                 name="keywords"
                 content={keywords}
             />
-            <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
             <meta name="description" content={description}/>
             <meta charSet="utf-8"/>
             <link rel="icon" href="/favicon.ico"/>
