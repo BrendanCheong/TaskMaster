@@ -10,7 +10,7 @@ module Api
                 if user.present? && user.authenticate(params.require(:password))
                     token = AuthenticationTokenService.encode(user)
                     cookie_time(token)
-                    render json: { success: 'User logged In' }
+                    render json: { success: token }
                 else
                     render json: { error: 'User not found' }, status: 422
                 end
@@ -21,7 +21,8 @@ module Api
 
                 if user.save && user_params[:password] == params[:confirm_password]
                     token = AuthenticationTokenService.encode(user)
-                    render json: { success: 'User created!' }
+                    cookie_time(token)
+                    render json: { success: token }
                 else
                     render json: { error: user.errors.messages }, status: 422
                 end
@@ -35,7 +36,7 @@ module Api
                 token = AuthenticationTokenService.encode(decoded_token)
                 cookie_time(token)
 
-                render json: { success: 'User token refreshed' }, status: 200
+                render json: { success: token }, status: 200
             end
 
             # GET/:id
@@ -72,10 +73,10 @@ module Api
                     :token,
                     {
                         value: token,
-                        httponly: true,
                         secure: Rails.env.production?,
-                        same_site: "None"
-                        path: '/'
+                        same_site: "None",
+                        path: '/',
+                        httponly: true,
                     }
                 )
             end
