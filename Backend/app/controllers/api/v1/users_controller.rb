@@ -73,6 +73,8 @@ module Api
                     {
                         value: token,
                         httponly: true,
+                        secure: Rails.env.production?,
+                        same_site: "None"
                         path: '/'
                     }
                 )
