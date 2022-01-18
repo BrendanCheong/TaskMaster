@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { VARIANT } from "@/util/popupTypes";
 import { useSnackbar } from "notistack";
+import cookie from "js-cookie";
 import axios from "axios";
 import UserAPI from "@/api/userAPI";
 
@@ -28,14 +29,9 @@ const Login = ({ flip, setFlipped }) => {
         onSubmit: async (values) => {
             setLoading(true);
             const api = new UserAPI();
-            const response = await axios.post("https://build-me-api.herokuapp.com/users/login", {
-                "username": "Brendan",
-                "email": "brendancej82@gmail.com",
-                "password": "boosterguy",
-                "passwordVerify":"boosterguy",
-            }, { withCredentials: true } );//await api.userAuth("/login", values);
+            const response = await api.userAuth("/login", values);
             setLoading(false);
-            if (response.data) {
+            if (response) {
                 Router.push("/todo");
                 handlePopup("Successfully Logged In!", VARIANT.SUCCESS);
                 return;
@@ -53,6 +49,23 @@ const Login = ({ flip, setFlipped }) => {
         enqueueSnackbar(message, {
             variant: variant,
         });
+    };
+
+    const cookie_test = async () => {
+        cookie.set("token", "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MjUxNjQzOX0.QbgsHdDEMOi85MiWzS8OSvY8lT_Vd05s5dH7112XIz4", {
+            expires: 1/24,
+            secure: true,
+            sameSite: "none",
+        });
+        const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/users/cookie", {
+            
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "*/*",
+            },
+        });
+        console.log(response);
     };
 
     return (
@@ -127,12 +140,17 @@ const Login = ({ flip, setFlipped }) => {
                         }
                     </div>
                 </div>
-                <p className="p-4 my-4 text-center">
+                <p className="flexrow p-4 my-4 space-x-3 text-center">
                     <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
                         onClick={() => setFlipped(!flip)} 
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
+                    <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
+                        onClick={() => cookie_test()} 
+                        type="button"
+                        disabled={flip}>
+                    Testing Button</button>
                 </p>
             </form>
         </>

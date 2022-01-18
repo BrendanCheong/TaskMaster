@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # custom paths
+      get '/users/cookie', to: "users#cookie_test"
       get '/users/refresh', to: "users#refresh"
       get '/tasks/user_id/:id', to: "tasks#user_id"
       get '/tags/tags_by_name', to: "tags#tags_by_name"
