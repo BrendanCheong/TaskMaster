@@ -60,23 +60,6 @@ const Login = ({ flip, setFlipped }) => {
         });
     };
 
-    const cookie_test = async () => {
-        cookie.set("token", "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MjUxNjQzOX0.QbgsHdDEMOi85MiWzS8OSvY8lT_Vd05s5dH7112XIz4", {
-            expires: 1/24,
-            secure: true,
-            sameSite: "none",
-        });
-        const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/users/cookie", {
-            
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "*/*",
-            },
-        });
-        console.log(response);
-    };
-
     return (
         <>
             <form className="container py-8 mx-auto absolute [-webkit-backface-visibility:hidden] [backface-visibility:hidden] w-full rounded bg-zinc-100"
@@ -155,12 +138,16 @@ const Login = ({ flip, setFlipped }) => {
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
-                    <DesktopDateTimePicker
-                        value={value}
-                        onChange={(newValue) => {
-                            setValue(newValue);
+                    <TextField
+                        id="datetime-local"
+                        label="Next appointment"
+                        type="datetime-local"
+                        defaultValue="2017-05-24T10:30"
+                        sx={{ width: 250 }}
+                        InputLabelProps={{
+                            shrink: true,
                         }}
-                        renderInput={(params) => <TextField {...params} />}/>
+                    />
                 </p>
             </form>
         </>
