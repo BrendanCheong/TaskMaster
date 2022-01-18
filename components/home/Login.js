@@ -33,7 +33,7 @@ const Login = ({ flip, setFlipped }) => {
                 "email": "brendancej82@gmail.com",
                 "password": "boosterguy",
                 "passwordVerify":"boosterguy",
-            }, { withCredentials: true });//await api.userAuth("/login", values);
+            }, { withCredentials: true } );//await api.userAuth("/login", values);
             setLoading(false);
             if (response.data) {
                 Router.push("/todo");
