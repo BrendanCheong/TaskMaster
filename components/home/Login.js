@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import DateTimePicker from "@mui/lab/DateTimePicker";
+import DesktopDateTimePicker from "@mui/lab/DesktopDateTimePicker";
 import * as yup from "yup";
 import Router from "next/router";
 import { useState } from "react";
@@ -155,7 +155,7 @@ const Login = ({ flip, setFlipped }) => {
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
-                    <DateTimePicker
+                    <DesktopDateTimePicker
                         value={value}
                         onChange={(newValue) => {
                             setValue(newValue);
