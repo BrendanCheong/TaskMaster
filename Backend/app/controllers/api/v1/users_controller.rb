@@ -39,10 +39,6 @@ module Api
                 render json: { success: token }, status: 200
             end
 
-            def cookie_test
-                render json: { success: "Your cookie is: #{cookies[:token]}" }, status: 200
-            end
-
             # GET/:id
             def show
                 @user = User.find_by(id: decoded_token[:id])

@@ -18,10 +18,12 @@ class UserAPI extends BaseAPI {
      * For either Login or Registering Users.
      * @param {string} slug extra url to be passed
      * @param {object} data email, password
-     * @returns {boolean} either true or false if logged in or registered successfully
+     * @returns {object} JWT Token in the response.
      */
     userAuth(slug, data) {
-        return super.post(super.slugCombiner(slug), data);
+        return super.apiPost(super.slugCombiner(slug), data)
+            .then((data) => data)
+            .catch(() => false);
     }
 
     /**

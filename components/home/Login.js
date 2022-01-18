@@ -12,6 +12,7 @@ import UserAPI from "@/api/userAPI";
 const Login = ({ flip, setFlipped }) => {
 
     const [loading, setLoading] = useState(false);
+    const ONE_HOUR_DURATION = 1 / 24;
 
     const validationSchema = yup.object({
         email: yup.string().required("You must enter your email"),
@@ -30,6 +31,12 @@ const Login = ({ flip, setFlipped }) => {
             setLoading(true);
             const api = new UserAPI();
             const response = await api.userAuth("/login", values);
+            cookie.set("token", response.data.success || "error", {
+                expires: ONE_HOUR_DURATION,
+                secure: true,
+                sameSite: "none",
+                domain: process.env.NEXT_PUBLIC_API_URL,
+            });
             setLoading(false);
             if (response) {
                 Router.push("/todo");
