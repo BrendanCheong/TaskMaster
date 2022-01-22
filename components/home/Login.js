@@ -1,4 +1,5 @@
 import TextField from "@mui/material/TextField";
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import * as yup from "yup";
 import Router from "next/router";
 import { useState } from "react";
@@ -12,6 +13,7 @@ import UserAPI from "@/api/userAPI";
 const Login = ({ flip, setFlipped }) => {
 
     const [loading, setLoading] = useState(false);
+    const [value, setValue] = useState(new Date());
     const ONE_HOUR_DURATION = 1 / 24;
 
     const validationSchema = yup.object({
@@ -56,23 +58,6 @@ const Login = ({ flip, setFlipped }) => {
         enqueueSnackbar(message, {
             variant: variant,
         });
-    };
-
-    const cookie_test = async () => {
-        cookie.set("token", "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBhc3N3b3JkIjpudWxsLCJuYW1lIjoiSm9obiIsImV4cCI6MTY0MjUxNjQzOX0.QbgsHdDEMOi85MiWzS8OSvY8lT_Vd05s5dH7112XIz4", {
-            expires: 1/24,
-            secure: true,
-            sameSite: "none",
-        });
-        const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/users/cookie", {
-            
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "*/*",
-            },
-        });
-        console.log(response);
     };
 
     return (
@@ -147,17 +132,23 @@ const Login = ({ flip, setFlipped }) => {
                         }
                     </div>
                 </div>
-                <p className="flexrow p-4 my-4 space-x-3 text-center">
+                <p className="flex flex-row p-4 my-4 space-x-3 text-center">
                     <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
                         onClick={() => setFlipped(!flip)} 
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
-                    <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
-                        onClick={() => cookie_test()} 
-                        type="button"
-                        disabled={flip}>
-                    Testing Button</button>
+                    <MobileDateTimePicker
+                        value={value}
+                        onChange={(newValue) => {
+                            console.log(newValue);
+                        }}
+                        label="With error handler"
+                        onError={console.log}
+                        minDate={new Date("2018-01-01T00:00")}
+                        inputFormat="yyyy/MM/dd hh:mm a"
+                        mask="___/__/__ __:__ _M"
+                        renderInput={(params) => <TextField {...params} />}/>
                 </p>
             </form>
         </>

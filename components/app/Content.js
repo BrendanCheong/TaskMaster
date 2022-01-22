@@ -7,10 +7,9 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { VARIANT } from "@/util/popupTypes";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import processDate from "@/util/datetime";
+import { processDate, processStringToDate } from "@/util/datetime";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TagsInput from "./TagsInput";
 
 const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
@@ -21,7 +20,7 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
     const oldTagArray = tags.length > 0
         ? tags.map((tag) => tag.id)
         : tags;
-
+    const DATE_DASH_FORMAT = "yyyy-MM-dd HH:mm";
     const [tagArray, setTagArray] = useState([]);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -90,9 +89,9 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
     };
 
     return (
-        <div className="flex-row flex-1 w-full h-full p-5 text-2xl bg-zinc-100">
-            <form className="flex flex-row w-full h-full p-2 bg-white shadow-lg rounded-xl" id="input forms" onSubmit={formik.handleSubmit}>
-                <section className="flex flex-col w-full p-3 space-y-8 md:w-4/12">
+        <div className="bg-zinc-100 flex-row flex-1 w-full h-full p-5 text-2xl">
+            <form className="rounded-xl flex flex-row w-full h-full p-2 bg-white shadow-lg" id="input forms" onSubmit={formik.handleSubmit}>
+                <section className="md:w-4/12 flex flex-col w-full p-3 space-y-8">
                     <TextField
                         label="Enter Task Title"
                         id="title"
@@ -116,21 +115,27 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                         value={formik.values.content}
                         onChange={formik.handleChange}
                     />
-                    <MobileDateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        onChange={(value) => formik.setFieldValue("endDate", value)}
+                    <TextField
+                        onChange={(e) => {
+                            const value = (e.target.value).replace("T", " ");
+                            const setDate = processStringToDate(value, DATE_DASH_FORMAT);
+                            formik.setFieldValue("endDate", setDate);
+                        }}
                         onKeyPress={e => { e.which === 13 && e.preventDefault(); }}
-                        ampm={false}
-                        value={formik.values.endDate}
-                        minDate={new Date()}
-                        mask="___/__/__ __:__"
+                        value={processDate(formik.values.endDate, DATE_DASH_FORMAT).replace(" ", "T")}
                         id="endDate"
                         label="Set Task Deadline"
                         error={formik.touched.title && Boolean(formik.errors.title)}
                         helperText={formik.touched.title && formik.errors.title}
                         onBlur={formik.handleBlur}
                         type="datetime-local"
-                        inputFormat={"dd/MM/yyyy HH:mm"}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{ 
+                            min: processDate(new Date(), DATE_DASH_FORMAT).replace(" ", "T"),
+                            pick12hourformat: "false",
+                        }}
                     />
                     <TagsInput
                         selectedTags={(tagArray) => setTagArray(tagArray)}
@@ -143,25 +148,25 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                         label="Tags"
                         onKeyPress={e => { e.which === 13 && e.preventDefault(); }}
                     />
-                    <button className="w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 shadow-md rounded-xl bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto md:hidden" type="submit">
+                    <button className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto md:hidden w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 shadow-md" type="submit">
                         Submit!
                     </button>
                 </section>
-                <section className="hidden h-full sm:flex sm:flex-col sm:p-3 sm:space-y-16 sm:w-8/12" id="preview form">
-                    <div className="flex flex-row w-full h-1/2">
-                        <h1 className="w-1/2 p-3 text-5xl font-bold truncate font-poppins">
+                <section className="sm:flex sm:flex-col sm:p-3 sm:space-y-16 sm:w-8/12 hidden h-full" id="preview form">
+                    <div className="h-1/2 flex flex-row w-full">
+                        <h1 className="font-poppins w-1/2 p-3 text-5xl font-bold truncate">
                             {formik.values.title}
                         </h1>
-                        <div className="flex flex-row items-end w-1/2 p-3 space-x-6 justify-items-end">
+                        <div className="justify-items-end flex flex-row items-end w-1/2 p-3 space-x-6">
                             {
                                 loading
                                     ? <>
-                                        <button className="w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md bg-gradient-to-r from-indigo-600 to-violet-700 font-roboto">
+                                        <button className="bg-gradient-to-r from-indigo-600 to-violet-700 font-roboto w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md">
                                             Loading...
                                         </button>
                                     </>
                                     : <>
-                                        <button className="w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto" type="submit">
+                                        <button className="bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-800 hover:to-violet-900 font-roboto w-40 h-10 px-5 py-1 mb-4 text-lg text-white transition duration-300 rounded-full shadow-md" type="submit">
                                             Submit!
                                         </button>
                                     </>
@@ -172,7 +177,7 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                         </div>
                         
                     </div>
-                    <span className="block w-full text-xl subpixel-antialiased font-light break-words whitespace-pre-line font-roboto h-1/2">
+                    <span className="font-roboto h-1/2 block w-full text-xl subpixel-antialiased font-light break-words whitespace-pre-line">
                         {formik.values.content}
                     </span>
                 </section>

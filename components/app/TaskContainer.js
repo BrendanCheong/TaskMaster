@@ -48,7 +48,7 @@ const TaskContainer = () => {
                         content={task.attributes.content} 
                         tags={task.attributes.tags}
                         status={task.attributes.status}
-                        endDate={processString(task.attributes.endDate)}
+                        endDate={task.attributes.endDate} // problem
                         index={task.id}
                     />
                 </div>)}

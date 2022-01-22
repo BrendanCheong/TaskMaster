@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { viewTask } from "@/redux/taskViewSlice";
+import { processDate } from "@/util/datetime";
 import Tags from "./Tags";
 import PropTypes from "prop-types";
 
@@ -8,10 +9,12 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
     const dispatch = useDispatch();
 
     const handleViewTask = () => {
+        const newDate = new Date(endDate);
+        newDate.setHours(newDate.getHours() - 8);
         dispatch(viewTask({
             title: title,
             content: content,
-            endDate: endDate,
+            endDate: processDate(newDate),
             status: status,
             tags: tags,
             id: index,
@@ -26,7 +29,7 @@ const Tasks = ({ title, content, tags, status, endDate, index }) => {
                 <div className={"max-w-sm overflow-hidden rounded-md" + (status && " line-through" || "")}>
                     <div className="px-6 py-4">
                         <div className="mb-2 text-xl font-bold">{title}</div>
-                        <div className="w-full break-words truncate max-h-56">
+                        <div className="max-h-56 w-full break-words truncate">
                             <p className="text-base whitespace-pre-line">
                                 {content}
                             </p>
