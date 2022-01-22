@@ -123,7 +123,7 @@ const Login = ({ flip, setFlipped }) => {
                         }
                     </div>
                 </div>
-                <p className="flex flex-row p-4 my-4 space-x-3 text-center">
+                <p className="p-4 my-4 space-x-3 text-center">
                     <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
                         onClick={() => setFlipped(!flip)} 
                         type="button"

@@ -52,15 +52,17 @@ export const {
  */
 const getTaskWithFiltersFulfiled = (state, action) => {
     let output = action.payload.response;
-    const filter = action.payload.response.filter;
+    const filterInput = action.payload.response.filter;
     // handles the logic of each of the filters parameters
-    if (filter.status) {
-        output = state.filter((task) => task.attributes.status === filter.status);
+    if (filterInput.status !== null) {
+        output = [...output].filter((task) => {
+            return task.attributes.status === filterInput.status;
+        });
     }
 
-    if (filter.search) {
+    if (filterInput.search !== null) {
         const fuzzy = new Fuse(output, OPTIONS);
-        const result = fuzzy.search(filter.search);
+        const result = fuzzy.search(filterInput.search);
         output = result.map((result) => result.item );
     }
     return output;
