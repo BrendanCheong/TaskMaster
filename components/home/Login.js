@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import DesktopDateTimePicker from "@mui/lab/DesktopDateTimePicker";
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import * as yup from "yup";
 import Router from "next/router";
 import { useState } from "react";
@@ -132,22 +132,23 @@ const Login = ({ flip, setFlipped }) => {
                         }
                     </div>
                 </div>
-                <p className="flexrow p-4 my-4 space-x-3 text-center">
+                <p className="flex flex-row p-4 my-4 space-x-3 text-center">
                     <button className="text-grey-dark text-slate-800 hover:text-indigo-600 text-sm no-underline transition duration-200"
                         onClick={() => setFlipped(!flip)} 
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
-                    <TextField
-                        id="datetime-local"
-                        label="Next appointment"
-                        type="datetime-local"
-                        defaultValue="2017-05-24T10:30"
-                        sx={{ width: 250 }}
-                        InputLabelProps={{
-                            shrink: true,
+                    <MobileDateTimePicker
+                        value={value}
+                        onChange={(newValue) => {
+                            console.log(newValue);
                         }}
-                    />
+                        label="With error handler"
+                        onError={console.log}
+                        minDate={new Date("2018-01-01T00:00")}
+                        inputFormat="yyyy/MM/dd hh:mm a"
+                        mask="___/__/__ __:__ _M"
+                        renderInput={(params) => <TextField {...params} />}/>
                 </p>
             </form>
         </>

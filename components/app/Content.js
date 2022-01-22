@@ -7,10 +7,9 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { VARIANT } from "@/util/popupTypes";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import processDate from "@/util/datetime";
+import { processDate, processStringToDate } from "@/util/datetime";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import TagsInput from "./TagsInput";
 
 const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
@@ -21,7 +20,7 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
     const oldTagArray = tags.length > 0
         ? tags.map((tag) => tag.id)
         : tags;
-
+    const DATE_DASH_FORMAT = "yyyy-MM-dd HH:mm";
     const [tagArray, setTagArray] = useState([]);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -116,20 +115,27 @@ const Content = ({ title, content, endDate, tags, status, editMode, id }) => {
                         value={formik.values.content}
                         onChange={formik.handleChange}
                     />
-                    <MobileDateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        onChange={(value) => formik.setFieldValue("endDate", value)}
+                    <TextField
+                        onChange={(e) => {
+                            const value = (e.target.value).replace("T", " ");
+                            const setDate = processStringToDate(value, DATE_DASH_FORMAT);
+                            formik.setFieldValue("endDate", setDate);
+                        }}
                         onKeyPress={e => { e.which === 13 && e.preventDefault(); }}
-                        ampm={false}
-                        value={formik.values.endDate}
-                        minDate={new Date()}
-                        mask="___/__/__ __:__"
+                        value={processDate(formik.values.endDate, DATE_DASH_FORMAT).replace(" ", "T")}
                         id="endDate"
                         label="Set Task Deadline"
                         error={formik.touched.title && Boolean(formik.errors.title)}
                         helperText={formik.touched.title && formik.errors.title}
                         onBlur={formik.handleBlur}
-                        inputFormat={"dd/MM/yyyy HH:mm"}
+                        type="datetime-local"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{ 
+                            min: processDate(new Date(), DATE_DASH_FORMAT).replace(" ", "T"),
+                            pick12hourformat: "false",
+                        }}
                     />
                     <TagsInput
                         selectedTags={(tagArray) => setTagArray(tagArray)}
