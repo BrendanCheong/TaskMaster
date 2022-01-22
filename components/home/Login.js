@@ -1,20 +1,16 @@
 import TextField from "@mui/material/TextField";
-import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import * as yup from "yup";
 import Router from "next/router";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { VARIANT } from "@/util/popupTypes";
 import { useSnackbar } from "notistack";
-import cookie from "js-cookie";
-import axios from "axios";
+import { setCookie } from "@/util/setCookie";
 import UserAPI from "@/api/userAPI";
 
 const Login = ({ flip, setFlipped }) => {
 
     const [loading, setLoading] = useState(false);
-    const [value, setValue] = useState(new Date());
-    const ONE_HOUR_DURATION = 1 / 24;
 
     const validationSchema = yup.object({
         email: yup.string().required("You must enter your email"),
@@ -33,12 +29,7 @@ const Login = ({ flip, setFlipped }) => {
             setLoading(true);
             const api = new UserAPI();
             const response = await api.userAuth("/login", values);
-            cookie.set("token", response.data.success || "error", {
-                expires: ONE_HOUR_DURATION,
-                secure: true,
-                sameSite: "none",
-                domain: process.env.NEXT_PUBLIC_API_URL,
-            });
+            setCookie(response.data.success);
             setLoading(false);
             if (response) {
                 Router.push("/todo");
@@ -138,17 +129,6 @@ const Login = ({ flip, setFlipped }) => {
                         type="button"
                         disabled={flip}>
                     Register for an Account</button>
-                    <MobileDateTimePicker
-                        value={value}
-                        onChange={(newValue) => {
-                            console.log(newValue);
-                        }}
-                        label="With error handler"
-                        onError={console.log}
-                        minDate={new Date("2018-01-01T00:00")}
-                        inputFormat="yyyy/MM/dd hh:mm a"
-                        mask="___/__/__ __:__ _M"
-                        renderInput={(params) => <TextField {...params} />}/>
                 </p>
             </form>
         </>
