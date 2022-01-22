@@ -2,8 +2,6 @@ import "../styles/globals.css";
 import "tailwindcss/tailwind.css";
 import Meta from "@/global/Meta";
 import stores from "@/redux/redux-stores/stores";
-import DateAdapter  from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Grow from "@mui/material/Grow";
 import Button from "@mui/material/Button";
 import { createRef } from "react";
@@ -42,10 +40,8 @@ const MyApp = ({ Component, pageProps }) => {
                                 Dismiss
                             </Button>
                         )}>
-                        <LocalizationProvider dateAdapter={DateAdapter}>
-                            <Meta/>
-                            <Component {...pageProps} />
-                        </LocalizationProvider>
+                        <Meta/>
+                        <Component {...pageProps} />
                     </SnackbarProvider>
                 </ThemeProvider>
             </Provider>
