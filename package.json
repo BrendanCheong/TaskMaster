@@ -16,7 +16,7 @@
         "@mui/material": "^5.2.8",
         "@mui/styles": "^5.2.3",
         "@reduxjs/toolkit": "^1.7.1",
-        "axios": "^0.24.0",
+        "axios": "^0.25.0",
         "cookie": "^0.4.1",
         "date-fns": "2.x",
         "downshift": "^6.1.7",
