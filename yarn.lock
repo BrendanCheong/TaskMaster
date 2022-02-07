@@ -241,15 +241,6 @@
     react-is "^17.0.2"
     react-transition-group "^4.4.2"
 
-"@mui/private-theming@^5.2.3", "@mui/private-theming@^5.3.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@mui/private-theming/-/private-theming-5.3.0.tgz#1ec32766fc4467f221663a4945b6c972c7d2567b"
-  integrity sha512-EBobUEyM9fMnteKrVPp8pTMUh81xXakyfdpkoh7Y19q9JpD2eh7QGAQVJVj0JBFlcUJD60NIE4K8rdokrRmLwg==
-  dependencies:
-    "@babel/runtime" "^7.16.7"
-    "@mui/utils" "^5.3.0"
-    prop-types "^15.7.2"
-
 "@mui/private-theming@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@mui/private-theming/-/private-theming-5.3.0.tgz#1ec32766fc4467f221663a4945b6c972c7d2567b"
@@ -310,7 +301,7 @@
   resolved "https://registry.yarnpkg.com/@mui/types/-/types-7.1.0.tgz#5ed928c5a41cfbf9a4be82ea3bbdc47bcc9610d5"
   integrity sha512-Hh7ALdq/GjfIwLvqH3XftuY3bcKhupktTm+S6qRIDGOtPtRuq2L21VWzOK4p7kblirK0XgGVH5BLwa6u8z/6QQ==
 
-"@mui/utils@^5.2.3", "@mui/utils@^5.3.0":
+"@mui/utils@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.3.0.tgz#5f31915063d25c56f1d3ba9e289bf447472a868c"
   integrity sha512-O/E9IQKPMg0OrN7+gkn7Ga5o5WA2iXQGdyqNBFPNrYzxOvwzsEtM5K7MtTCGGYKFe8mhTRM0ZOjh5OM0dglw+Q==
@@ -419,10 +410,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
-"@reduxjs/toolkit@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.7.1.tgz#994962aeb7df3c77be343dd2ad1aa48221dbaa0c"
-  integrity sha512-wXwXYjBVz/ItxB7SMzEAMmEE/FBiY1ze18N+VVVX7NtVbRUrdOGKhpQMHivIJfkbJvSdLUU923a/yAagJQzY0Q==
+"@reduxjs/toolkit@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.7.2.tgz#b428aaef92582379464f9de698dbb71957eafb02"
+  integrity sha512-wwr3//Ar8ZhM9bS58O+HCIaMlR4Y6SNHfuszz9hKnQuFIKvwaL3Kmjo6fpDKUOjo4Lv54Yi299ed8rofCJ/Vjw==
   dependencies:
     immer "^9.0.7"
     redux "^4.1.2"
