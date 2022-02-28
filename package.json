@@ -15,7 +15,7 @@
         "@emotion/styled": "^11.6.0",
         "@mui/material": "^5.4.1",
         "@mui/styles": "^5.4.2",
-        "@reduxjs/toolkit": "^1.7.2",
+        "@reduxjs/toolkit": "^1.8.0",
         "axios": "^0.26.0",
         "cookie": "^0.4.2",
         "date-fns": "2.x",
