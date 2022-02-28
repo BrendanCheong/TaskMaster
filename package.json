@@ -11,12 +11,12 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@emotion/react": "^11.7.1",
+        "@emotion/react": "^11.8.1",
         "@emotion/styled": "^11.6.0",
         "@mui/material": "^5.4.1",
         "@mui/styles": "^5.4.2",
         "@reduxjs/toolkit": "^1.7.2",
-        "axios": "^0.25.0",
+        "axios": "^0.26.0",
         "cookie": "^0.4.2",
         "date-fns": "2.x",
         "downshift": "^6.1.7",
@@ -35,8 +35,8 @@
     },
     "devDependencies": {
         "autoprefixer": "^10.4.2",
-        "eslint": "8.9.0",
-        "eslint-config-next": "12.0.10",
+        "eslint": "8.10.0",
+        "eslint-config-next": "12.1.0",
         "postcss": "^8.4.6",
         "prettier": "2.5.1",
         "redux-devtools": "^3.7.0",
