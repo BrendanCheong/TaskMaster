@@ -12,10 +12,10 @@
     },
     "dependencies": {
         "@emotion/react": "^11.8.1",
-        "@emotion/styled": "^11.6.0",
+        "@emotion/styled": "^11.8.1",
         "@mui/material": "^5.4.4",
         "@mui/styles": "^5.4.2",
-        "@reduxjs/toolkit": "^1.7.2",
+        "@reduxjs/toolkit": "^1.8.0",
         "axios": "^0.26.0",
         "cookie": "^0.4.2",
         "date-fns": "2.x",
@@ -35,7 +35,7 @@
     },
     "devDependencies": {
         "autoprefixer": "^10.4.2",
-        "eslint": "8.9.0",
+        "eslint": "8.10.0",
         "eslint-config-next": "12.1.0",
         "postcss": "^8.4.6",
         "prettier": "2.5.1",
